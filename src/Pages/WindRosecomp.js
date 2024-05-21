@@ -286,7 +286,7 @@ html2canvas(chartElement, {
     // Create a download link and trigger click event
     const downloadLink = document.createElement('a');
     downloadLink.href = image;
-    downloadLink.download = 'windrosechart.png';
+    downloadLink.download = stationName+'_windrosechart.png';
     document.body.appendChild(downloadLink);
     downloadLink.click();
 
@@ -323,7 +323,7 @@ const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
   pdf.text(spaces, 10, 40); // Adjust the position and number of spaces as needed
 
   pdf.addImage(chartImage, 'PNG',0, 60, pdfWidth, pdfHeight);
-  pdf.save(stationName+'windrosechart.pdf');
+  pdf.save(stationName+'_windrosechart.pdf');
 });
 };
  
