@@ -35,7 +35,7 @@ var nodes = [{
     children:false,
 },
  {
-    value: 'Dashboard',
+    value: 'Dashboard1',
     label: 'Dashboard',
     url:'/Dashboard1',
     //icon:'bi bi-grid',
