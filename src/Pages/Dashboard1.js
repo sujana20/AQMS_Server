@@ -279,8 +279,8 @@ function Dashboard1() {
     }, 10);
   }
   const HeatMapDetails = function(){
-    setFromDate(new Date('March 28, 2024'));
-    setToDate(new Date('March 30, 2024'));
+    setFromDate(new Date('March 26, 2024'));
+    setToDate(new Date('April 06, 2024'));
     setCalander(true);
     setTimeout(() => {
       GetHeatMapData();
