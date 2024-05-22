@@ -222,7 +222,7 @@ function AverageDataReport() {
                 minMaxValues[item] = { min: "", max: "" };
             }
             let finalitem = item.split(".").length > 1 ? item.replace(/\./g, '_@_') : item;
-            let finadata = data.filter(key => key.hasOwnProperty(item));
+            let finadata = data.filter(key => key.hasOwnProperty(finalitem));
             if(finadata.length>0){
                  minMaxValues[item].min = finadata[0][finalitem+"minValue"]==null?"":finadata[0][finalitem+"minValue"];
                 minMaxValues[item].max = finadata[0][finalitem+"maxValue"]==null?"":finadata[0][finalitem+"maxValue"];
@@ -236,7 +236,7 @@ function AverageDataReport() {
           let headerCell = $('th').filter(function() {
             let finaltext =$(this).html().split("<br>")[0];
             let finalparametersplit = finaltext.split(".");
-            let finalparameter = finalparametersplit.length > 1 ? finaltext.replace(/\./g, '_@_') : finaltext;
+            let finalparameter = finaltext;
       
             return finalparameter === key;
         });
@@ -362,9 +362,9 @@ function AverageDataReport() {
 
                 //dataForGrid[temp][paramater[0].parameterName] = roundedNumber;
                 dataForGrid[temp][Selectedparameter] = roundedNumber;
-                dataForGrid[temp][paramater[0].parameterName + "flag"] = data1[k].loggerFlags;
-                dataForGrid[temp][paramater[0].parameterName + "minValue"] = minValue;
-                dataForGrid[temp][paramater[0].parameterName + "maxValue"] = maxValue;
+                dataForGrid[temp][Selectedparameter + "flag"] = data1[k].loggerFlags;
+                dataForGrid[temp][Selectedparameter + "minValue"] = minValue;
+                dataForGrid[temp][Selectedparameter + "maxValue"] = maxValue;
 
               } else {
 

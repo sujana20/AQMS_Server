@@ -34,7 +34,7 @@ var nodes = [{
     expandicon:'',
     children:false,
 },
- {
+/* {
     value: 'Dashboard1',
     label: 'Dashboard',
     url:'/Dashboard1',
@@ -42,7 +42,7 @@ var nodes = [{
     img: 'images/dashboard.png',
     expandicon:'',
     children:false,
-}, 
+}, */
 {
     value: 'Configuration',
     label: 'Configuration',
