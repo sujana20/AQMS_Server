@@ -302,7 +302,7 @@ function AverageDataReport() {
     
     let url = CommonFunctions.getWebApiUrl()+ "api/AirQuality/RawDataReport?"
     if (GroupId != "") {
-      url = CommonFunctions.getWebApiUrl()+ "api/AirQuality/StationGroupingData?"
+      url = CommonFunctions.getWebApiUrl()+ "api/AirQuality/StationAverageGroupingData?"
     }
 
         let authHeader = await CommonFunctions.getAuthHeader();
