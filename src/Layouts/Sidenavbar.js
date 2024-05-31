@@ -11,9 +11,23 @@ function Sidenavbar() {
   console.log(Params);
   const [permissions, setpermisssions] = useState([]);
 
-  const NavbarActive = function(){ 
+  const NavbarActive = function(id){ 
+   
     
- 
+    // const configurationPanel = document.getElementById('Configuration-Panel');
+  
+    // if (id === 'Station-SubPanel') {
+    //   // Add the 'activenew' class to the parent li element
+    //   if (configurationPanel) {
+    //     configurationPanel.classList.add('activenew');
+    //   }
+    // } else {
+    //   // Remove the 'activenew' class from the parent li element
+    //   if (configurationPanel) {
+    //     configurationPanel.classList.remove('activenew');
+    //   }
+    // } onClick={() => NavbarActive(x.value + "-SubPanel")}
+    //alert('hi');
   }
 
   const getUserRole = function () {
@@ -88,8 +102,8 @@ function Sidenavbar() {
                 <ul id={x.label + "-nav"} className="nav-content collapse" data-bs-parent="#sidebar-nav">
                   {x.children.map((x, y) =>
                     permissions.indexOf(x.value) >= 0 && (
-                      <li id={x.value + "-SubPanel"}>
-                        <NavLink to={x.url} className="animation-forwards animate-delay-1" >
+                      <li id={x.value + "-SubPanel"} >
+                        <NavLink to={x.url} className="animation-forwards animate-delay-1">
                           <i className={x.icon}></i>
                           <span>{x.label}</span>
                         </NavLink>

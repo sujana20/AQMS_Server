@@ -244,8 +244,8 @@
 }
 .jexcel > thead > tr > td{
   
-  font-size: 12px!important;
-  letter-spacing: 0.5px;
+  font-size: 13px!important;
+  /* letter-spacing: 0.5px; */
 }
 
 .header-nav .profile .dropdown-header span {

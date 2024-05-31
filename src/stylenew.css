@@ -364,12 +364,12 @@ background-image:url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/
   left: 50%;
   border: 8px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 8px solid #221ba3e8;
-  width: 60px;
-  height: 60px;
+  border-top: 8px solid var(--blue);
+  width: 50px;
+  height: 50px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-  top: 50%;
+  top: 60%;
   z-index: 99999;
 }
 
@@ -407,7 +407,7 @@ background-image:url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/
   font-family: 'Roboto light';
   border-right: none;
   border-left: none;
-  padding: 13px 0px;
+  padding: 13px 8px;
   position: relative;
   text-transform: uppercase;
 }
@@ -452,21 +452,24 @@ background-image:url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/
 }
 
 .nodatamessage{
-  position: absolute;
-  left: 50%;
-  font-size: 15px;
-  color:green;
-  font-weight: 600;
+  background: white;
+  width: 100%;
+  padding: 25px;
+  border-radius: 11px;
+  text-align: center;
+  font-size: 21px;
+  font-family: 'Roboto Bold';
+  color: #111;
 }
 .resizable tr td
 {
   white-space: pre-line;
 }
-#chartCanvas
+/* #chartCanvas
 {
   background-color: white;
   padding-top: 10px;
-}
+} */
 
 /* for new dashboard start */
 
@@ -1083,3 +1086,39 @@ transform: rotate(calc(360deg * var(--fifth-start) + 45deg + var(--donut-spacing
 .login-checkbox label{
   font-weight: 600; color: #111;padding: 1px 0 0 2px;
 }
+.check-w16{
+  width: 16px;
+  height: 16px;
+  margin: 1px 5px;
+}
+.graphCanvas{
+  margin-top: -37px;
+}
+.staticalBarCanvas{
+  margin-top: -33px;
+}
+.radio-input-box .form-check-input{
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+  margin-right: 5px;
+}
+.radio-input-box .form-check-label{
+  color: #111;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* .chart-legend {
+  max-height: 60px;
+  overflow-y: scroll;
+} */
+/* .chartbox canvas{
+  height: 600px!important
+} */
+
+/* .abc-scrol{
+  width: 100%; 
+  overflow-x: auto; 
+}
+.graphCanvas{position: relative; height:500px!important; width:100vw!important; overflow: scroll;} */

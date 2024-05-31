@@ -200,8 +200,8 @@ function ExceedenceReport() {
       controller: {
         data: ListExceedence,
         loadData: function (filter) {
-          $(".jsgrid-filter-row input:text").addClass("form-control").addClass("form-control-sm");
-          $(".jsgrid-filter-row select").addClass("custom-select").addClass("custom-select-sm");
+          $(".jsgrid-filter-row input:text").addClass("form-control").addClass("form-control-lg border-50");
+          $(".jsgrid-filter-row select").addClass("custom-select").addClass("custom-select-sm device-select-control");
           return $.grep(this.data, function (item) {
             return ((!filter.average || item.average.includes(filter.average))
               && (!filter.date || item.date.includes(filter.date))
@@ -338,45 +338,47 @@ function ExceedenceReport() {
           <div className="container">
           <div className="card">
               <div className="card-body">
-                <div className="row filtergroup">
-                  <div className="col">
+                <div className="row filtergroup statics-col-div">
+                  <div className="col mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid">
+                    <select className="form-select stationid border-50" id="stationid">
                     <option selected> Select Station Name</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y}>{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Parameters</label>
-                    <select className="form-select pollutentid" id="pollutentid" onChange={(e)=>Parameterchange(e)}>
+                    <select className="form-select pollutentid border-50" id="pollutentid" onChange={(e)=>Parameterchange(e)}>
                     <option selected> Select Parameter</option>
                       {Pollutents.map((x, y) =>
                         <option value={x.parameter} key={y} >{x.parameter}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Units</label>
-                    <select className="form-select pollutentid" id="unitid">
+                    <select className="form-select pollutentid border-50" id="unitid">
                     <option value="" selected> Select Unit</option>
                       {Units.map((x, y) =>
                         <option value={x.unitID} key={y} >{GetUnitName(x.unitID)}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3 position-relative">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col">
+                  <div className="col mb-3 position-relative">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Interval</label>
-                    <select className="form-select" id="intervalid">
+                    <select className="form-select border-50" id="intervalid">
                       <option value="" selected>Select Interval</option>
                       {Criteria.map((x, y) =>
                         <option value={x.interval} key={y} >{GetInterval(x.interval)}</option>
@@ -385,10 +387,10 @@ function ExceedenceReport() {
                   </div>
 
                   <div className="col-md-12  mt-4">
-                    <button type="button" className="btn btn-primary" onClick={GenarateReport}>Generate Report</button>
+                    <button type="button" className="btn btn-primary download-btn mb-3" onClick={GenarateReport}>Generate Report</button>
 
                     {ListExceedence && (
-                        <button type="button" className="btn btn-primary mx-1 datashow" onClick={DownloadPDF}>Download PDF</button>
+                        <button type="button" className="btn btn-primary mx-2 datashow download-btn mb-3" onClick={DownloadPDF}>Download PDF</button>
                     )}
                   </div>
                 </div>
