@@ -108,7 +108,7 @@ import CommonFunctions from "../utils/CommonFunctions";
 
                         <div className="col-12">
                           <label htmlFor="yourPassword" className="form-label login-label">Password</label>
-                          <input type="password" name="password" className="form-control border-50" id="Password" required />
+                          <input type="password"  name="password" className="form-control border-50" id="Password" required />
                           <div className="invalid-feedback">Please enter your password!</div>
                         </div>
 
