@@ -141,7 +141,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
                           <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
                           </span>
                           </div>
-                          <input type="password"  name="password" className="form-control border-50" id="Password" required />
                           <div className="invalid-feedback">Please enter your password!</div>
                         </div>
                         <div className="col-6">
