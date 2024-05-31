@@ -18,6 +18,7 @@ import {
   defaults
 } from 'chart.js';
 import { Chart, Bar, Line, Scatter } from 'react-chartjs-2';
+import { color } from "chart.js/helpers";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -91,6 +92,19 @@ function PredefinedCharts() {
     throw new Error('Bad Hex');
   }
 
+  const legendMargin = {
+    id: 'legendMargin',
+    beforeInit(chart, legend, options){
+      //console.log('hello',chart.legend.fit);
+      const fitValue = chart.legend.fit;
+      chart.legend.fit = function fit(){
+        fitValue.bind(chart.legend)();
+        return this.height += 25;
+      }
+    },
+    
+  };
+
   const getchartdata = function (data, pollutent, charttype, criteria) {
     if (chartRef.current != null) {
       chartRef.current.data = {};
@@ -128,11 +142,33 @@ function PredefinedCharts() {
 
     setChartOptions({
       responsive: true,
+      tension: 0.4,
       /* interaction: {
         mode: 'index',
         intersect: false,
       }, */
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: {
+          border:{
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          },
+        },
+        x:{
+          border:{
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          },
+          grid: {
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          }, 
+        }
+    },
     /* scales: {
       y: {
         beginAtZero: true,
@@ -140,11 +176,23 @@ function PredefinedCharts() {
     }, */
       plugins: {
         legend: {
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            color: '#111',
+            font: {
+              family: "Roboto Bold",
+            }
+          },
           position: 'top',
+          align: 'start',
         },
         title: {
           display: true,
           text: pollutent+' ANNUAL TENDENCY DIAGRAM',
+          color: '#2663AC',
         },
       },
     });
@@ -197,40 +245,47 @@ const DownloadPdf = () => {
   return (
     <main id="main" className="main" >
       <div className="container">
+      <div class="pagetitle"><h1>Predefined Chart</h1></div>
         <section>
-          <div>
-            <div>
+          <div className="common-table-pd">
+            <div className="ps-2 pe-2">
               <div>
-                <h6 className="my-3">Select Parameter(To Genarate Chart)</h6>
+                <label className="my-3 subheading-title">Select Parameter(To Genarate Chart)</label>
               </div>
               <div className="">
-                <div className="form-check form-check-inline">
+                <div className="form-check form-check-inline radio-input-box">
                   <input className="form-check-input" type="radio" name="parametersradio" onChange={GenarateChart} id="coradio" value="CO" />
                   <label className="form-check-label" for="coradio">CO</label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div className="form-check form-check-inline radio-input-box">
                   <input className="form-check-input" type="radio" name="parametersradio" onChange={GenarateChart} id="no2radio" value="NO2" />
                   <label className="form-check-label" for="no2radio">NO2</label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div className="form-check form-check-inline radio-input-box">
                   <input className="form-check-input" type="radio" name="parametersradio" onChange={GenarateChart} defaultChecked={true} id="so2radio" value="SO2" />
                   <label className="form-check-label" for="so2radio">SO2</label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div className="form-check form-check-inline radio-input-box">
                   <input className="form-check-input" type="radio" name="parametersradio" onChange={GenarateChart} id="o3radio" value="O3" />
                   <label className="form-check-label" for="o3radio">O3</label>
                 </div>
-                <div className="form-check form-check-inline">
+                <div className="form-check form-check-inline radio-input-box">
                   <input className="form-check-input" type="radio" name="parametersradio" onChange={GenarateChart} id="pm10radio" value="PM10" />
                   <label className="form-check-label" for="pm10radio">PM10</label>
                 </div>
               </div>
               {ChartData && (
                 <div className="col-md-12">
-                  <Line ref={chartRef} options={ChartOptions} data={ChartData}  height={120}/>
-                  <div className="text-center">
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPdf}>Download as Pdf</button>
+                  <div className="d-none d-sm-none d-md-block">
+                     <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={120}/>
+                  </div>
+                  <div className="d-block d-sm-block d-md-none">
+                     <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={320}/>
+                  </div>
+                 
+                  <div className="text-right col-sm-12 mt-2 mb-2">
+                    <button type="button" className="btn btn-primary mx-1 mb-2 download-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 download-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                 </div>
               )}

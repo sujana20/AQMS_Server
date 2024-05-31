@@ -824,9 +824,9 @@ function LiveData() {
             <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Group Name</label>
-                    <select className="form-select" id="groupid" onChange={ChangeGroupName}>
+                    <select className="form-select border-50" id="groupid" onChange={ChangeGroupName}>
                       <option value="">None</option>
                       <option value="all" selected>All Stations</option>
                       {Groups.map((x, y) =>
@@ -835,27 +835,27 @@ function LiveData() {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid" onChange={ChangeStation}>
+                    <select className="form-select stationid border-50" id="stationid" onChange={ChangeStation}>
                       <option value="" selected> Select Station</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y} >{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Parameters</label>
-                    <select className="form-select pollutentid" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
+                    <select className="form-select pollutentid border-50" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
                       {/* <option selected> Select Pollutents</option> */}
                       {Pollutents.map((x, y) =>
                         <option value={x.parameterName} key={y} >{x.parameterName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Interval</label>
-                    <select className="form-select" id="criteriaid">
+                    <select className="form-select border-50" id="criteriaid">
                       <option value="" selected>Select Interval</option>
                       <option value="15-M" selected>15-M</option>
                       {Criteria.map((x, y) =>
@@ -863,11 +863,11 @@ function LiveData() {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2 mt-4">
-                    <button type="button" className="btn btn-primary" onClick={getdatareport}>GetData</button>
-                    <button type="button" className="btn btn-secondary mx-1" onClick={Resetfilters}>Reset</button>
+                  <div className="col-md-6 mt-2 mb-2">
+                    <button type="button" className="btn btn-primary filter-btn" onClick={getdatareport}>GetData</button>
+                    <button type="button" className="btn btn-secondary mx-3 reset-btn" onClick={Resetfilters}>Reset</button>
                   </div>
-                  <div className="col-md-2 mt-4">
+                  <div className="col-md-6 mt-2 mb-2">
                     <div className="form-check">
                       <input className="form-check-input" type="checkbox" id="autorefresh" onChange={(e) => setAutorefresh(e.target.checked)} defaultChecked={Autorefresh} />
                       <label className="form-check-label form-label" for="isderived">

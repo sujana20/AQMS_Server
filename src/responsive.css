@@ -18,14 +18,25 @@
   .jsgrid-header-row>.jsgrid-header-cell{
     font-size: 11px!important;
   }
+  .statics-col-div .col{
+    width: 100%;
+      flex-shrink: 0;
+      flex: auto;
+  }
+  
 }
 
 @media (min-width:768px) and (max-width: 991px) {
-  .logo{height: auto;}
+  .logo{height: auto;width: auto;}
   .logo img{height: 66px;  width: 69px;  object-fit: cover;margin-left: 8px;}
   /* .header-nav{padding: 9px 7px;} */
   .toggle-sidebar .sidebar{top: 75px;}
   .login-bg{background-size: 100% 100%;}
+  .statics-col-div .col{
+    width: 50%;
+      flex-shrink: 0;
+      flex: auto;
+  }
 }
 
 @media (min-width:992px) and (max-width: 1199px) {
