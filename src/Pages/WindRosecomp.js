@@ -11,6 +11,7 @@ function WindRosecomp() {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [Stations, setListStations] = useState([]);
+  const [SelectedStation, setSelectedStation] = useState();
   const chartRef = useRef();
   const [Isdownlaod, setIsdownlaod] = useState(false);
   //const $ = window.jQuery;
@@ -74,6 +75,8 @@ function WindRosecomp() {
   const GenarateReport= async function(){
     setIsdownlaod(false);
     let StationID = document.getElementById("stationid").value;
+    const Station = Stations.find(station  => station .id == StationID);
+    setSelectedStation(Station.stationName)
     let Fromdate = document.getElementById("fromdateid").value;
     let Todate = document.getElementById("todateid").value;
     let valid = ReportValidations(StationID,Fromdate, Todate);
@@ -260,17 +263,48 @@ function WindRosecomp() {
 
  const DownloadPng=function() {
   const chartElement = chartRef.current;
-  html2canvas(chartElement, {
-    backgroundColor: 'white', // Set null to preserve the original chart background color
-  }).then((canvas) => {
-    const image = canvas.toDataURL('image/png');
+const stationName = SelectedStation;
+
+// Use html2canvas to render the chart onto a canvas element
+html2canvas(chartElement, {
+    backgroundColor: 'white' // Set the background color of the canvas
+}).then((canvas) => {
+    // Create a new canvas element
+    const newCanvas = document.createElement('canvas');
+    const context = newCanvas.getContext('2d');
+
+    // Set canvas size
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height+100;
+
+    context.fillStyle = 'white'; // Set the background color
+    context.fillRect(0, 0, newCanvas.width, newCanvas.height);
+    // Set text properties
+    context.font = '20px Arial';
+    context.fillStyle = 'black';
+    // Calculate text width
+    const textWidth = context.measureText(stationName).width;
+    // Calculate text position to center horizontally
+    const xPosition = (newCanvas.width - textWidth) / 2;
+    // Calculate text position to center vertically with space at the top and bottom
+    const yPosition = 40;
+    // Draw text
+    context.fillText(stationName, xPosition, yPosition);
+    context.drawImage(canvas, 0, 75);
+
+    // Convert canvas to data URL
+    const image = newCanvas.toDataURL('image/png');
 
     // Create a download link and trigger click event
     const downloadLink = document.createElement('a');
     downloadLink.href = image;
-    downloadLink.download = 'windrosechart.png';
+    downloadLink.download = stationName+'_windrosechart.png';
+    document.body.appendChild(downloadLink);
     downloadLink.click();
-  });
+
+    // Clean up: Remove the download link from the document body
+    document.body.removeChild(downloadLink);
+});
   /* var a = document.createElement('a');
   a.href = chartRef.current.toBase64Image();
   a.download = 'chart.png';
@@ -280,6 +314,9 @@ function WindRosecomp() {
 
 const DownloadPdf = () => {
 const chartElement = chartRef.current;
+const stationName = SelectedStation;
+const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
+
   html2canvas(chartElement, {
     backgroundColor: 'white', // Set null to preserve the original chart background color
   }).then((canvas) => {
@@ -289,8 +326,16 @@ const chartElement = chartRef.current;
   const pdf = new jsPDF();
   const pdfWidth = pdf.internal.pageSize.getWidth();
   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  pdf.addImage(chartImage, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  pdf.save('windrosechart.pdf');
+   // Add station name and spaces
+  // Add station name
+  pdf.setFontSize(14); // Adjust font size as needed
+  pdf.text(stationName, ((pdfWidth/2)-20), 45); // Adjust the position as needed
+
+  // Add spaces
+  pdf.text(spaces, 10, 40); // Adjust the position and number of spaces as needed
+
+  pdf.addImage(chartImage, 'PNG',0, 60, pdfWidth, pdfHeight);
+  pdf.save(stationName+'_windrosechart.pdf');
 });
 };
  
