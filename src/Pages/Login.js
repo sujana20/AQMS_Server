@@ -1,15 +1,43 @@
-
-import React, { Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 //import { useNavigate, redirect } from "react-router-dom";
 import { toast } from 'react-toastify';
 import bcrypt from 'bcryptjs';
 import CommonFunctions from "../utils/CommonFunctions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 //function Login() {
 
   
   //const Navigate = useNavigate();
   const Login = ({ handleAuthentication }) => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("rememberedUsername");
+    const storedPassword = localStorage.getItem("rememberedPassword");
+    if (storedUsername && storedPassword) {
+      setUsername(storedUsername);
+      setPassword(storedPassword);
+      setRememberMe(true);
+    }
+  }, []);
+
+
+    const togglePasswordVisibility = () => {
+      setPasswordVisible(!passwordVisible);
+    };
+
   const handleLogin = async(event) => {
+    if (rememberMe) {
+      localStorage.setItem("rememberedUsername", username);
+      localStorage.setItem("rememberedPassword", password);
+    } else {
+      localStorage.removeItem("rememberedUsername");
+      localStorage.removeItem("rememberedPassword");
+    }
     let form = document.querySelectorAll('#Loginform')[0];
     let UserName = document.getElementById("UserName").value;
     let Password = document.getElementById("Password").value;
@@ -101,20 +129,23 @@ import CommonFunctions from "../utils/CommonFunctions";
                           <label htmlFor="yourUsername" className="form-label login-label">Username</label>
                           <div className="input-group has-validation">
                             <span className="input-group-text d-none" id="inputGroupPrepend">@</span>
-                            <input type="text" name="username" className="form-control border-50 required" id="UserName" required />
+                            <input type="text" name="username" className="form-control border-50" id="UserName" value={username} onChange={(e) => setUsername(e.target.value)} required />
                             <div className="invalid-feedback">Please enter your username.</div>
                           </div>
                         </div>
-
                         <div className="col-12">
                           <label htmlFor="yourPassword" className="form-label login-label">Password</label>
-                          <input type="password" name="password" className="form-control border-50" id="Password" required />
+                          <div>
+                          <input type={passwordVisible ? 'text' : 'password'} name="password" className="form-control border-end-0 border-50" id="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                          <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
+                          <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+                          </span>
+                          </div>
                           <div className="invalid-feedback">Please enter your password!</div>
                         </div>
-
                         <div className="col-6">
                           <div className="form-check login-checkbox">
-                            <input className="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe" />
+                            <input className="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}/>
                             <label className="form-check-label" for="rememberMe">Remember me</label>
                           </div>
                         </div>
