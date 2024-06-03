@@ -9,13 +9,14 @@ import CommonFunctions from "../utils/CommonFunctions";
   
   //const Navigate = useNavigate();
   const Login = ({ handleAuthentication }) => {
-  const handleLogin = async(event) => {
+    
+  const handleLogin =  function (event){
     let form = document.querySelectorAll('#Loginform')[0];
     let UserName = document.getElementById("UserName").value;
     let Password = document.getElementById("Password").value;
     //Password=await handleEncrypt(Password);
     if (!form.checkValidity()) {
-      form.classNameList.add('was-validated');
+      form.classList.add('was-validated');
     } else {
       fetch(CommonFunctions.getWebApiUrl()+ 'api/Users/Login', {
         method: 'POST',
