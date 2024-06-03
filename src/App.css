@@ -28,6 +28,16 @@
   color: #61dafb;
 }
 
+.password-toggle-icon {
+  position: relative;
+  font-size: 16px;
+  color: #8b8b8b;
+  cursor: pointer;
+  bottom: 26px;
+  left: 90%;
+  transform: translateY(50%);
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

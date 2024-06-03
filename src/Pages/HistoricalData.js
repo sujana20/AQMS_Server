@@ -22,6 +22,7 @@ import {
   Legend,
   TimeScale,
   defaults,
+  elements,
 } from 'chart.js';
 
 import annotationPlugin from "chartjs-plugin-annotation";
@@ -1152,9 +1153,27 @@ function HistoricalData() {
         // console.log(findClosestTimeIndex(FormatedDate(xminvalue)),findClosestTimeIndex(FormatedDate(xmaxvalue)));
         return;
       }
-    }
+    },
+    beforeInit(chart, legend, options){
+      //console.log('hello',chart.legend.fit);
+      const fitValue = chart.legend.fit;
+      chart.legend.fit = function fit(){
+        fitValue.bind(chart.legend)();
+        return this.height += 30;
+      }
+    },
+    // afterUpdate: function(chart) {
+    //     const legend = chart.legend;
+    //     const itemCount = legend.legendItems.length;
+    //     alert(itemCount);
+    //     // if (itemCount > 20) {
+    //     //   legend.options.maxHeight = 150; // Set max height for the legend container
+    //     //   legend.options.overflow = 'auto'; // Add scrollbar when overflow occurs
+    //     // }
+    //   }
   };
   /* Drag and drop end */
+
   /* Chart Start */
   const getchartdata = function (data, pollutent, charttype, criteria) {
     /* if (chartRef.current != null) {
@@ -1217,7 +1236,7 @@ function HistoricalData() {
               size: 10, // Adjust the font size for x-axis labels
               family: 'Roboto Light',// Change the font type for x-axis labels
               weight: 'bold',
-              color: 'blue'
+              color: '#111',
             }
           }
         }
@@ -1231,9 +1250,9 @@ function HistoricalData() {
       ticks: {
         font: {
           size: 11, // Adjust the font size for x-axis labels
-          family: 'Roboto Light',// Change the font type for x-axis labels
+          family: 'Roboto bold',// Change the font type for x-axis labels
           weight: 'bold',
-          color: 'blue'
+          color: '#111'
         }
       }
     };
@@ -1243,20 +1262,29 @@ function HistoricalData() {
       scales: Scaleslist,
       events: ['mousedown', 'mouseup', 'mousemove', 'mouseout'],
       // maintainAspectRatio: true,
+      tension: 0.4,
+      elements:{
+        point:{
+          pointStyle: 'circle',
+          pointRadius: 15,
+        },
+      },
       plugins: {
         legend: {
-          position: 'bottom',
+          position: 'top',
           align: 'start',
           fullSize: true,
           labels: {
-            color: 'navy',
-            boxWidth: 20,
+            color: '#111',
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
             padding: 10,
             //boxHeight:20
             font: {
               size: 11,
-              family: "Roboto Light",
-              weight: 'bold'
+              family: "Roboto bold",
             }
           },
           onClick: function (event, legendItem) {
@@ -1319,8 +1347,10 @@ function HistoricalData() {
               yMin: Getminvalue(visibleRecords, ""),
               yMax: Getmaxvalue(visibleRecords, ""),
               borderWidth: 2,
-              borderColor: 'red',
-              backgroundColor: 'rgba(255,0,0,0.2)',
+              borderColor: '#2663ac',
+              backgroundColor: '#2663ac3b',
+              
+             
             },
           ],
         },
@@ -1456,9 +1486,9 @@ const DownloadPdf = () => {
             <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Group</label>
-                    <select className="form-select" id="groupid" onChange={ChangeGroupName}>
+                    <select className="form-select border-50" id="groupid" onChange={ChangeGroupName}>
                       <option value="" selected>None</option>
                       <option value="all">All Stations</option>
                       {Groups.map((x, y) =>
@@ -1466,16 +1496,16 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid" onChange={ChangeStation}>
+                    <select className="form-select stationid border-50" id="stationid" onChange={ChangeStation}>
                       <option value="" selected> Select Station</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y} >{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Parameters</label>
                     <select className="form-select pollutentid" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
                       {/* <option selected> Select Pollutents</option> */}
@@ -1484,17 +1514,19 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3 position-relative">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3 position-relative">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Interval</label>
-                    <select className="form-select" id="criteriaid">
+                    <select className="form-select border-50" id="criteriaid">
                       <option value="" selected>Select Interval</option>
                       <option value="15-M" selected>15-M</option>
                       {Criteria.map((x, y) =>
@@ -1505,28 +1537,28 @@ const DownloadPdf = () => {
                        )}
                     </select>
                   </div>
-                  <div className=" mt-4">
-                    <div class="col-md-2 float-start">
-                      <button type="button" className="btn btn-primary" id="getdata" onClick={getdatareport}>Get Data</button>
-                      <button type="button" className="btn btn-secondary mx-1" onClick={Resetfilters}>Reset</button>
+                  <div className="mt-2">
+                    <div class="col-md-12 float-start">
+                      <button type="button" className="btn btn-primary filter-btn" id="getdata" onClick={getdatareport}>Get Data</button>
+                      <button type="button" className="btn btn-secondary mx-3 reset-btn" onClick={Resetfilters}>Reset</button>
                     </div>
                     {ListReportData != 0 && (
-                      <div class="col-md-6 float-end text-end px-0">
+                      <div class="col-md-12 float-end text-end px-0">
 
                         <div class="form-check form-check-inline">
                           <label className="form-check-label" htmlFor="ValidCheck">
                             Valid Records
                           </label>
-                          <input className="form-check-input" type="checkbox" id="ValidCheck" />
+                          <input className="form-check-input check-w16" type="checkbox" id="ValidCheck" />
                         </div>
                         <div class="form-check form-check-inline">
                           <label className="form-check-label" htmlFor="invalidCheck">
                             Invalid Records
                           </label>
-                          <input className="form-check-input" type="checkbox" id="invalidCheck" />
+                          <input className="form-check-input check-w16" type="checkbox" id="invalidCheck" />
                         </div>
-                        <button type="button" className="btn btn-primary datashow me-0" onClick={() => DownloadExcel('excel')} >Download Excel</button>&nbsp;
-                        <button type="button" className="btn btn-primary datashow me-0" onClick={() => DownloadExcel('csv')} >Download Csv</button>
+                        <button type="button" className="btn btn-primary datashow me-0 download-btn" onClick={() => DownloadExcel('excel')} >Download Excel</button>&nbsp;
+                        <button type="button" className="btn btn-primary datashow me-0 download-btn" onClick={() => DownloadExcel('csv')} >Download Csv</button>
                       </div>
                     )}
 
@@ -1545,7 +1577,7 @@ const DownloadPdf = () => {
                 <div className="card">
                   <div className="cad-body p-2">
                     <div className="row">
-                      <div className="col-md-12 mb-3">
+                      <div className="col-md-12 mb-3 mt-3">
                         {AllLookpdata.listFlagCodes.map((i) =>
                           <button type="button" className="btn btn-primary flag mx-1" style={{ backgroundColor: i.colorCode }} data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title={i.name}>{i.code}</button>
                         )}
@@ -1565,19 +1597,21 @@ const DownloadPdf = () => {
             {ListReportData.length > 0 && ChartData && jspreadRef.current != null && (
               <div className="card p-2" >
                 <div className="card-body">
-                  <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[dragger]} height={100} />
-                  <div className="text-center">
-                    <input className="form-check-input"
+                  <div className="graphCanvas">
+                    <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[dragger]} height={100} />
+                  </div>
+                  <div className="text-right mt-4 mb-3 pe-2 col-sm-12">
+                    <input className="form-check-input check-w16"
                       type="checkbox"
                       checked={allLegendsChecked}
                       onChange={toggleAllLegends}
                     />
                     <label className="checkboxStylelabel">Select All</label>
                   </div>
-                  <div className="text-center">
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPdf}>Download as Pdf</button>
-                </div>
+                  <div className="text-right col-sm-12">
+                    <button type="button" className="btn btn-primary mx-3 download-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary download-btn"  onClick={DownloadPdf}>Download as Pdf</button>
+                  </div>
                 </div>
               </div>
             )}

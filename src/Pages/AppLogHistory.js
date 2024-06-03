@@ -115,17 +115,17 @@ function AppLogHistory() {
         <section className="section">
           <div className="container">
             <div className="row mt-4">
-              <div className="col-sm-12 col-md-3 col-lg-2 position-relative">
+              <div className="col-sm-12 col-md-3 col-lg-2 mb-2 position-relative">
                 <label className="form-label">From Date</label>
                 <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                 <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
               </div>
-              <div className="col-sm-12 col-md-3 col-lg-2 position-relative">
+              <div className="col-sm-12 col-md-3 col-lg-2 mb-2 position-relative">
                 <label className="form-label">To Date</label>
                 <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                 <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
               </div>
-              <div className="col-sm-12 col-md-6 col-lg-8 mt-4 text-right pe-0">
+              <div className="col-sm-12 col-md-6 col-lg-8 mt-4 mb-2 text-right pe-0">
                 <button type="button" className="btn btn-primary mx-1 filter-btn" onClick={() => GetAppLog()}>Filter</button>
                 <button type="button" className="btn btn-secondary mx-1 reset-btn" onClick={() => GetAppLog('reset')}>Reset</button>
               </div>

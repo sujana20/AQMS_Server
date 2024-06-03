@@ -294,7 +294,7 @@ table.table .avatar {
 .irs--flat .irs-from,
 .irs--flat .irs-to,
 .irs--flat .irs-single {
-  background: #3daf7c;
+  background: var(--blue);
 }
 
 .irs--flat .irs-handle {
@@ -658,6 +658,7 @@ table.jexcel colgroup col:nth-child(1) {
   line-height: 1.0rem;
   text-align: center;
   padding: 0px;
+  border: 1px solid #e2e2e2;
 }
 
 .correct {
@@ -779,11 +780,10 @@ table.jexcel colgroup col:nth-child(1) {
   padding: 0.5em
 }
 .jexcel > tbody > tr > td{
-  font-size: calc(0.75rem);
   font-weight: 600;
-  padding: 0.5em !important;
-  border-top: 1px solid #ddd !important;
-    border-left: 1px solid #ddd !important;
+  padding: 0.9em !important;
+  border-top: 1px solid #d8d8d8 !important;
+  border-left: none !important;
 }
 .jexcel >thead>tr.jexcel_nested>td{
   position: sticky;
@@ -812,7 +812,9 @@ table.jexcel colgroup col:nth-child(1) {
   /* z-index: 9999; */
 }
 
-
+.react-datepicker-popper{
+  z-index: 11!important;
+}
 
 
 /*--Newly Added by Vinny--*/

@@ -189,7 +189,7 @@ h6 {
 
 @media (max-width: 1199px) {
   #main {
-    padding: 20px;
+    padding: 20px;margin-top: 80px;
   }
 }
 
@@ -395,7 +395,7 @@ h6 {
 .card {
   margin-bottom: 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 11px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
 }
 
@@ -644,9 +644,10 @@ h6 {
 }
 .download-btn{
   background: var(--blue);
-    border: none;
-    border-radius: 10px;
-    padding: 7px 15px;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 15px;
+  text-transform: uppercase;
 }
 
 ::-webkit-scrollbar {
@@ -664,7 +665,11 @@ h6 {
   border-radius: 10px;
   background: #aab7cf; 
 }
-
+.subheading-title{
+  font-family: 'Roboto Bold';
+  color: #111;
+  font-size: 14px;
+}
 .stationList-filter-bg .jsgrid-clear-filter-button{
   /* background-color: red; */
   background-image: url('/public/images/newfilter.png');
@@ -783,4 +788,20 @@ h6 {
   margin-left: auto;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
+}
+.form-select:disabled{
+  border-radius: 50px; overflow-y: auto;
+}
+.jexcel > thead > tr > td{
+  border-top: none;
+    border-left: none;
+}
+.jexcel_content{
+  overflow: initial !important;
+  border-right: none!important;
+  border-bottom: none!important;
+}
+
+.jsgrid-row>.jsgrid-cell, .jsgrid-alt-row>.jsgrid-cell{
+  word-wrap: break-word;
 }

@@ -1801,9 +1801,42 @@ function DataProcessing() {
         // console.log(findClosestTimeIndex(FormatedDate(xminvalue)),findClosestTimeIndex(FormatedDate(xmaxvalue)));
         return;
       }
-    }
+    },
+    beforeInit(chart, legend, options){
+      //console.log('hello',chart.legend.fit);
+      const fitValue = chart.legend.fit;
+      chart.legend.fit = function fit(){
+        fitValue.bind(chart.legend)();
+        return this.height += 30;
+      }
+    },
+
+    // afterUpdate(chart, args, options) {
+    //   // Modify legend labels
+    //   const legend = chart.legend;
+    //   const labels = legend.legendItems;
+   
+    //   if (labels.length > 20) {
+    //     // Set max height and overflow
+    //     legend.options.maxHeight = 50; // Set the desired max height
+    //     legend.options.overflow = 'scroll';
+    //   } else {
+    //     // Reset max height and overflow if not needed
+    //     legend.options.maxHeight = null;
+    //     legend.options.overflow = null;
+    //   }
+    //   labels.forEach(label => {
+        
+    //   });
+  
+      
+    // }
   };
   /* Drag and drop end */
+  const widthStyle = {
+    width: GroupSelected == "all" ? '250vh' : '100%'
+  };
+
 
 
   const getchartdata = function (data, pollutent, charttype, criteria) {
@@ -1853,6 +1886,10 @@ function DataProcessing() {
           type: 'linear',
           display: chartele?.display == undefined ? true : chartele?.display,
           position: chartele?.position ? chartele.position : i % 2 === 0 ? 'left' : 'right',
+          offset: true,
+          // afterFit: function(scale) {
+          //   scale.width = 40; // Adjust the width of the y-axis
+          // },
           title: {
             display: true,
             text: Stationname != "" ? Stationname + " - " + Parametersplit[0] : Parametersplit[0]
@@ -1887,15 +1924,18 @@ function DataProcessing() {
       responsive: true,
       scales: Scaleslist,
       events: ['mousedown', 'mouseup', 'mousemove', 'mouseout'],
-      // maintainAspectRatio: true,
+      //maintainAspectRatio: false, // Ensure the chart can take full width/height of the container
       plugins: {
         legend: {
-          position: 'bottom',
+          position: 'top',
           align: 'start',
           fullSize: true,
           labels: {
-            color: 'navy',
-            boxWidth: 20,
+            color: '#111',
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
             padding: 10,
             //boxHeight:20
             font: {
@@ -1964,8 +2004,8 @@ function DataProcessing() {
               yMin: Getminvalue(visibleRecords, ""),
               yMax: Getmaxvalue(visibleRecords, ""),
               borderWidth: 2,
-              borderColor: 'red',
-              backgroundColor: 'rgba(255,0,0,0.2)',
+              borderColor: '#2663ac',
+              backgroundColor: '#2663ac3b',
             },
           ],
         },
@@ -2145,9 +2185,9 @@ const DownloadPdf = () => {
             <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Group Name</label>
-                    <select className="form-select" id="groupid" onChange={ChangeGroupName}>
+                    <select className="form-select border-50" id="groupid" onChange={ChangeGroupName}>
                       <option value="" selected>None</option>
                       <option value="all">All Stations</option>
                       {Groups.map((x, y) =>
@@ -2155,17 +2195,17 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Station Name</label>
                     {/*  <select className="form-select stationid" id="stationid" multiple="multiple" onChange={ChangeStation}> */}
-                    <select className="form-select stationid" id="stationid" onChange={ChangeStation}>
+                    <select className="form-select stationid border-50" id="stationid" onChange={ChangeStation}>
                       <option value="" selected> Select Station</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y} >{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Parameters</label>
                     <select className="form-select pollutentid" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
                       {/* <option selected> Select Pollutents</option> */}
@@ -2173,18 +2213,20 @@ const DownloadPdf = () => {
                         <option value={x.parameterName} key={y} >{x.parameterName}</option>
                       )}
                     </select>
-                  </div>
-                  <div className="col-md-2">
+                  </div> 
+                  <div className="col-md-2 mb-3 position-relative">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3 position-relative">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-2 mb-3">
                     <label className="form-label">Interval</label>
-                    <select className="form-select" id="criteriaid">
+                    <select className="form-select border-50" id="criteriaid">
                       <option value="" selected>Select Interval</option>
                       <option value="15-M" selected>15-M</option>
                       {Criteria.map((x, y) =>
@@ -2192,9 +2234,9 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className=" mt-4">
-                    <button type="button" className="btn btn-primary" id="getdata" onClick={getdatareport}>Get Data</button>
-                    <button type="button" className="btn btn-secondary mx-1" onClick={Resetfilters}>Reset</button>
+                  <div className=" mt-2">
+                    <button type="button" className="btn btn-primary download-btn" id="getdata" onClick={getdatareport}>Get Data</button>
+                    <button type="button" className="btn btn-secondary mx-3 reset-btn" onClick={Resetfilters}>Reset</button>
                   </div>
                   <div className="col-md-4">
                     <div className="row">
@@ -2236,21 +2278,34 @@ const DownloadPdf = () => {
               <div class="nodatamessage" id="nodatamessage">No data found</div>
             )}
             {ListReportData.length > 0 && ChartData && jspreadRef.current != null && (
-              
-              <div className="chartmaindiv">
-                <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[dragger]} height={100} id="chartCanvas" />
-                <div className="text-center"> 
-                  <input
-                  className="form-check-input"
-                    type="checkbox"
-                    checked={allLegendsChecked}
-                    onChange={toggleAllLegends}
-                  />&nbsp;
-                  <label className="form-check-label">Select All</label>
-                </div>
-                <div className="text-center">
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPdf}>Download as Pdf</button>
+              <div className="card p-2">
+                <div className="card-body">
+                  <div className="chartmaindiv" style={{width:'100%', overflowX:'auto'}}>
+                    
+                      <div className="graphCanvas d-none d-sm-none d-md-block"  style={widthStyle}>
+                        <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[dragger]} height={100} style={{width:'2000px', overflowX:'scroll', overflowY:'scroll'}} id="chartCanvas" />
+                      </div>
+
+                      <div className="graphCanvas d-block d-sm-block d-md-none"  style={widthStyle}>
+                        <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[dragger]} height={500} style={{width:'2000px', overflowX:'scroll', overflowY:'scroll'}} id="chartCanvas" />
+                      </div>
+
+
+                    
+                    <div className="text-right mt-4 mb-3 pe-2 col-sm-12"> 
+                      <input
+                      className="form-check-input"
+                        type="checkbox"
+                        checked={allLegendsChecked}
+                        onChange={toggleAllLegends}
+                      />&nbsp;
+                      <label className="form-check-label">Select All</label>
+                    </div>
+                    <div className="text-right col-sm-12">
+                    <button type="button" className="btn btn-primary mx-3 download-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary download-btn"  onClick={DownloadPdf}>Download as Pdf</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

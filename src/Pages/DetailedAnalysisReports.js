@@ -20,6 +20,7 @@ import {
 } from 'chart.js';
 import { Chart, Bar, Line, Scatter } from 'react-chartjs-2';
 import annotationPlugin from "chartjs-plugin-annotation";
+import { color } from "chart.js/helpers";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -231,6 +232,21 @@ function DetailedAnalysisReports() {
     datasets.push({ label: "", data: chartdata, borderColor: colorArray, borderWidth: 2, borderRadius: 5, backgroundColor: bgcolors })
     setChartOptionsAvg({
       responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+        y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+      },
+     
       /* interaction: {
         mode: 'index',
         intersect: false,
@@ -244,6 +260,7 @@ function DetailedAnalysisReports() {
         title: {
           display: true,
           text: 'ANNUAL AVERAGE CONCENTRATION',
+          color: '#111',
         },
       },
     });
@@ -276,6 +293,20 @@ function DetailedAnalysisReports() {
     datasets.push({ label: "", data: chartdata, borderColor: colorArray, borderWidth: 2, borderRadius: 5, backgroundColor: bgcolors })
     setChartOptionsMax({
       responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+        y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+      },
       /* interaction: {
         mode: 'index',
         intersect: false,
@@ -289,6 +320,7 @@ function DetailedAnalysisReports() {
         title: {
           display: true,
           text: 'MAXIMUM 1-HOUR CONCENTRATION',
+          color: '#111',
         },
       },
     });
@@ -341,20 +373,37 @@ function DetailedAnalysisReports() {
           time: {
             unit: "year"
           },
-          bounds: 'ticks'
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          },
+          bounds: 'ticks',
         },
-        /* y: {
-          beginAtZero: true,
-        }, */
+         y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        }, 
       },
       plugins: {
         legend: {
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            color: '#111',
+            font: {
+              family: "Roboto Bold",
+            }
+          },
           // display: false,
           position: 'top',
         },
         title: {
           display: true,
           text: pollutent + ' HOUR CONCENTRATIONS - 24Hr',
+          color: '#111',
         },
       },
     });
@@ -401,20 +450,36 @@ function DetailedAnalysisReports() {
           time: {
             unit: "year"
           },
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          },
           bounds: 'ticks'
         },
-        /* y: {
-          beginAtZero: true,
-        }, */
+         y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          },
+        }, 
       },
       plugins: {
         legend: {
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            color: '#111',
+            font: {
+              family: "Roboto Bold",
+            }
+          },
           // display: false,
           position: 'top',
         },
         title: {
           display: true,
           text: pollutent + ' HOUR CONCENTRATIONS - 1Hr',
+          color: '#111',
         },
       },
     });
@@ -482,6 +547,20 @@ function DetailedAnalysisReports() {
     datasets.push({ label: "", data: chartdata, borderColor: colorArray, borderWidth: 2, borderRadius: 5, backgroundColor: bgcolors })
     setChartOptionsExcedence24h({
       responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+        y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+      },
       /* interaction: {
         mode: 'index',
         intersect: false,
@@ -495,6 +574,7 @@ function DetailedAnalysisReports() {
         title: {
           display: true,
           text: pollutent + ' HOURS EXCEEDING -24Hr',
+          color: '#111',
         },
         annotation: {
           annotations: Annotations
@@ -558,6 +638,20 @@ function DetailedAnalysisReports() {
     datasets.push({ label: "", data: chartdata, borderColor: colorArray, borderWidth: 2, borderRadius: 5, backgroundColor: bgcolors })
     setChartOptionsExcedence1h({
       responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+        y: {
+          ticks: {
+            color: 'black', // Color of the x-axis labels
+          }
+          
+        },
+      },
       /* interaction: {
         mode: 'index',
         intersect: false,
@@ -571,6 +665,7 @@ function DetailedAnalysisReports() {
         title: {
           display: true,
           text: pollutent + ' HOURS EXCEEDING -1Hr',
+          color: '#111',
         },
         annotation: {
           annotations: Annotations
@@ -634,53 +729,59 @@ const DownloadPdf = () => {
             <div className="card">
               <div className="card-body">
                 <div className="row filtergroup">
-                  <div className="col-md-3">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid" onChange={Stationchange}>
+                    <select className="form-select stationid border-50" id="stationid" onChange={Stationchange}>
                       <option selected value="">Select Station</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y} >{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-3 mb-3">
                     <label className="form-label">Parameters</label>
-                    <select className="form-select pollutentid" id="pollutentid">
+                    <select className="form-select pollutentid border-50" id="pollutentid">
                       <option selected value=""> Select Parameter</option>
                       {Pollutents.map((x, y) =>
                         <option value={x.parameterName} key={y} >{x.parameterName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 mb-3">
                     <div className="ion-slider-container pull-left" style={{ width: '98%' }}>
                       <input type="range" className="js-range-slider" value="3" data-orientation="vertical" />
                     </div>
                   </div>
-                  <div className="mt-3">
-                    <button type="button" className="btn btn-primary" onClick={GenarateChart}>Generate Chart</button>
+                  <div className="col-sm-12 mt-2">
+                    <button type="button" className="btn btn-primary download-btn" onClick={GenarateChart}>Generate Chart</button>
                   </div>
                 </div>
               </div>
             </div>
 
 
-            <div className="row mt-0" >
+            <div className="" >
               <div className="row mt-0" ref={chartRefMain}>
               {ChartOptionsAvg && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Bar ref={chartRef} options={ChartOptionsAvg} data={ChartDataAvg} height={90} />
                     </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Bar ref={chartRef} options={ChartOptionsAvg} data={ChartDataAvg} height={250} />
+                    </div> 
                   </div>
                 </div>
               )}
               {ChartOptionsMax && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Bar ref={chartRef} options={ChartOptionsMax} data={ChartDataMax} height={90} />
+                    </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Bar ref={chartRef} options={ChartOptionsMax} data={ChartDataMax} height={250} />
                     </div>
                   </div>
                 </div>
@@ -688,8 +789,11 @@ const DownloadPdf = () => {
               {ChartOptions24h && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Line ref={chartRef} options={ChartOptions24h} data={ChartData24h} height={90} />
+                    </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Line ref={chartRef} options={ChartOptions24h} data={ChartData24h} height={250} />
                     </div>
                   </div>
                 </div>
@@ -697,17 +801,24 @@ const DownloadPdf = () => {
               {ChartOptionsh && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Line ref={chartRef} options={ChartOptionsh} data={ChartDatah} height={90} />
                     </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Line ref={chartRef} options={ChartOptionsh} data={ChartDatah} height={250} />
+                    </div>
+
                   </div>
                 </div>
               )}
               {ChartOptionsExcedence24h && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Bar ref={chartRef} options={ChartOptionsExcedence24h} data={ChartDataExcedence24h} height={90} />
+                    </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Bar ref={chartRef} options={ChartOptionsExcedence24h} data={ChartDataExcedence24h} height={250} />
                     </div>
                   </div>
                 </div>
@@ -715,17 +826,21 @@ const DownloadPdf = () => {
               {ChartOptionsExcedence1h && (
                 <div className="col-md-6">
                   <div className="card">
-                    <div className="card-body p-2">
+                    <div className="card-body p-2 d-none d-sm-none d-md-none d-lg-block">
                       <Bar ref={chartRef} options={ChartOptionsExcedence1h} data={ChartDataExcedence1h} height={90} />
                     </div>
+                    <div className="card-body p-2 d-block d-sm-block d-md-block d-lg-none">
+                      <Bar ref={chartRef} options={ChartOptionsExcedence1h} data={ChartDataExcedence1h} height={250} />
+                    </div>
+
                   </div>
                 </div>
               )}
               </div>
               {AllDataList !=null &&(
-               <div className="text-center">
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPdf}>Download as Pdf</button>
+               <div className="text-center col-sm-12 mt-3">
+                <button type="button" className="btn btn-primary mx-1 mb-3 download-btn"  onClick={DownloadPng}>Download as Image</button>
+                <button type="button" className="btn btn-primary mx-1 mb-3 download-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                 )}
             </div>

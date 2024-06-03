@@ -292,6 +292,20 @@ function StasticsReport() {
     throw new Error('Bad Hex');
   }
 
+
+  const legendMargin = {
+    id: 'legendMargin',
+    beforeInit(chart, legend, options){
+      //console.log('hello',chart.legend.fit);
+      const fitValue = chart.legend.fit;
+      chart.legend.fit = function fit(){
+        fitValue.bind(chart.legend)();
+        return this.height += 25;
+      }
+    },
+    
+  };
+
   const getchartdata = function (data, pollutent, charttype, criteria) {
     if (chartRef.current != null) {
       chartRef.current.data = {};
@@ -358,7 +372,7 @@ function StasticsReport() {
                 chartdata.push(tempdata[index1].value)
               }
             }
-            datasets.push({ fill: charttype == 'area' ? true : false, label: data.StationNames[j].StationName + "-" + pollutent[i], data: chartdata, borderColor: colorArray[i], borderWidth: 2, borderRadius: 5, backgroundColor: hexToRgbA(colorArray[i]) })
+            datasets.push({ fill: charttype == 'area' ? true : false, label: data.StationNames[j].StationName + "-" + pollutent[i], data: chartdata, borderColor: colorArray[i], borderRadius: 5, backgroundColor: hexToRgbA(colorArray[i]) })
           }
 
         }
@@ -374,17 +388,17 @@ function StasticsReport() {
       if (criteria != 'MeanTimeseries') {
         if (charttype == 'bar') {
           if (criteria == 'Percentile') {
-            datasets.push({ label: pollutent[i] + " - 98 %ile", data: NinetyEightPercentile, borderColor: colorArray[(colorArray.length) - (i + 1)], borderWidth: 1, borderRadius: 5, backgroundColor: hexToRgbA(colorArray[(colorArray.length) - (i + 1)]) })
-            datasets.push({ label: pollutent[i] + " - 50 %ile", data: FiftyPercentile, borderColor: colorArray[i], borderWidth: 1, borderRadius: 5, backgroundColor: hexToRgbA(colorArray[i]) })
+            datasets.push({ label: pollutent[i] + " - 98 %ile", data: NinetyEightPercentile, borderColor: colorArray[(colorArray.length) - (i + 1)], borderRadius: 5, backgroundColor: hexToRgbA(colorArray[(colorArray.length) - (i + 1)]) })
+            datasets.push({ label: pollutent[i] + " - 50 %ile", data: FiftyPercentile, borderColor: colorArray[i], borderRadius: 5, backgroundColor: hexToRgbA(colorArray[i]) })
           } else {
             datasets.push({ label: pollutent[i], data: chartdata, borderColor: colorArray[i], borderRadius: 5, backgroundColor: hexToRgbA(colorArray[i]) })
           }
         } else if (charttype == 'line') {
           if (criteria == 'Percentile') {
-            datasets.push({ label: pollutent[i] + " - 98 %ile", data: NinetyEightPercentile, borderWidth: 1, borderColor: colorArray[(colorArray.length) - (i + 1)], backgroundColor: hexToRgbA(colorArray[(colorArray.length) - (i + 1)]) })
-            datasets.push({ label: pollutent[i] + " - 50 %ile", data: FiftyPercentile, borderWidth: 1, borderColor: colorArray[i], backgroundColor: hexToRgbA(colorArray[i]) })
+            datasets.push({ label: pollutent[i] + " - 98 %ile", data: NinetyEightPercentile, borderColor: colorArray[(colorArray.length) - (i + 1)], backgroundColor: hexToRgbA(colorArray[(colorArray.length) - (i + 1)]) })
+            datasets.push({ label: pollutent[i] + " - 50 %ile", data: FiftyPercentile,  borderColor: colorArray[i], backgroundColor: hexToRgbA(colorArray[i]) })
           } else {
-            datasets.push({ label: pollutent[i], data: chartdata, borderWidth: 1, borderColor: colorArray[i], backgroundColor: hexToRgbA(colorArray[i]) })
+            datasets.push({ label: pollutent[i], data: chartdata, borderColor: colorArray[i], backgroundColor: hexToRgbA(colorArray[i]) })
           }
         } else if (charttype == 'area') {
           if (criteria == 'Percentile') {
@@ -398,6 +412,28 @@ function StasticsReport() {
     }
     setChartOptions({
       responsive: true,
+      tension: 0.4,
+      scales: {
+        y: {
+          border:{
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          },
+        },
+        x:{
+          border:{
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          },
+          grid: {
+            display: false,
+            borderWidth: 0,
+            drawBorder: false,
+          }, 
+        }
+    },
       /* interaction: {
         mode: 'index',
         intersect: false,
@@ -410,7 +446,10 @@ function StasticsReport() {
             pointStyle: 'circle',
             boxWidth: 8,
             boxHeight: 8,
-            
+            color: '#111',
+            font: {
+              family: "Roboto Bold",
+            }
           },
           position: 'top',
           align: 'start',
@@ -436,16 +475,8 @@ function StasticsReport() {
 
   /* Barchart End */
 
-  // const legendMargin = {
-  //   id: 'legendMargin',
-  //   beforeInit(chart, legend, options) {
-  //     const originalFit = legend.fit;
-  //     legend.fit = function() {
-  //       originalFit.call(this); // Ensuring correct binding
-  //       this.height += 150; // Add your desired margin here
-  //     };
-  //   }
-  // };
+  
+  
   const DownloadPng=function() {
     let ChartCriteria = document.getElementById("criteriaid").value;
     const chartElement = chartRef.current.canvas;
@@ -494,8 +525,8 @@ const DownloadPdf = () => {
           <div>
             <div className="card">
               <div className="card-body">
-                <div className="row filtergroup">
-                  <div className="col">
+                <div className="row filtergroup statics-col-div">
+                  <div className="col mb-3">
                     <label className="form-label">Station Name</label>
                     <select className="form-select stationid" id="stationid" multiple="multiple">
 
@@ -504,7 +535,7 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Parameters</label>
                     <select className="form-select pollutentid" id="pollutentid" multiple="multiple">
                       {/* <option selected> Select Pollutents</option> */}
@@ -513,17 +544,17 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col position-relative">
+                  <div className="col mb-3 position-relative">
                     <label className="form-label">From Date</label>
                     <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                     <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col position-relative">
+                  <div className="col mb-3 position-relative">
                     <label className="form-label">To Date</label>
                     <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                     <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Type of Chart</label>
                     <select className="form-select border-50" id="charttypeid">
                       <option value="bar">Bar Chart</option>
@@ -532,7 +563,7 @@ const DownloadPdf = () => {
                       {/*   <option value="scatter">Scatter Chart</option> */}
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Criteria</label>
                     <select className="form-select border-50" id="criteriaid">
                       <option value="Mean">Mean by Station</option>
@@ -545,7 +576,7 @@ const DownloadPdf = () => {
                       <option value="Percentile">98 &amp; 50 Percentile </option>
                     </select>
                   </div>
-                  <div className="col">
+                  <div className="col mb-3">
                     <label className="form-label">Interval</label>
                     <select className="form-select border-50" id="intervalid">
                       <option value="" selected>Select Interval</option>
@@ -556,7 +587,7 @@ const DownloadPdf = () => {
                     </select>
                   </div>
 
-                  <div className="col-md-12  mt-4">
+                  <div className="col-md-12  mt-3">
                     <button type="button" className="btn btn-primary filter-btn" onClick={GenarateChart}>Generate Chart</button>
                   </div>
                 </div>
@@ -565,12 +596,17 @@ const DownloadPdf = () => {
             {ChartData && ChartType == 'bar' && (
               <div className="col-md-12">
                 <div className="card">
-                  <div className="card-body p-2">
-                    <Bar ref={chartRef} options={ChartOptions} data={ChartData} height={120} />
-                  <div className="text-right mt-4 pb-4">
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
-                </div>
+                  <div className="card-body p-3">
+                    <div className="staticalBarCanvas d-none d-sm-none d-md-none d-lg-block">
+                      <Bar ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={120} />
+                    </div>
+                    <div className="staticalBarCanvas d-block d-sm-block d-md-block d-lg-none">
+                      <Bar ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
+                    </div>
+                  <div className="text-right mt-3 pb-4">
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -578,11 +614,17 @@ const DownloadPdf = () => {
             {ChartData && ChartType == 'line' && (
               <div className="col-md-12">
                 <div className="card">
-                  <div className="card-body p-2">
-                    <Line ref={chartRef} options={ChartOptions} data={ChartData} height={120} />
-                    <div className="text-right mt-4 pb-4">
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
+                  <div className="card-body p-3">
+                  <div className="staticalBarCanvas d-none d-sm-none d-md-none d-lg-block">
+                    <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={120} />
+                  </div>
+                  <div className="staticalBarCanvas d-block d-sm-block d-md-block d-lg-none">
+                    <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
+                  </div>
+
+                    <div className="text-right mt-3 pb-4">
+                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
                 </div>
@@ -591,11 +633,16 @@ const DownloadPdf = () => {
             {ChartData && ChartType == 'area' && (
               <div className="col-md-12">
                 <div className="card">
-                  <div className="card-body p-2">
-                    <Line ref={chartRef} options={ChartOptions} data={ChartData} height={120} />
-                    <div className="text-right mt-4 pb-4">
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
+                  <div className="card-body p-3">
+                    <div className="staticalBarCanvas d-none d-sm-none d-md-none d-lg-block">
+                      <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={120} />
+                    </div>
+                    <div className="staticalBarCanvas d-block d-sm-block d-md-block d-lg-none">
+                      <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
+                    </div>
+                    <div className="text-right mt-3 pb-4">
+                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
                 </div>

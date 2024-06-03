@@ -36,6 +36,7 @@ function AverageDataReport() {
   const [Pollutents, setPollutents] = useState([]);
 
   const [Criteria, setcriteria] = useState([]);
+  const [groupPollutents, setGroupPollutents] = useState([])
   const PollutentsRef = useRef([]);
   PollutentsRef.current = SelectedPollutents;
   const Itemcount = useRef();
@@ -78,11 +79,9 @@ function AverageDataReport() {
   }
 
   useEffect(() => {
-
     initializeJsGrid();
   }, [SelectedPollutents]);
   /* reported data start */
-
   const UpdateColPos = function (cols) {
 
     var left = $('.jsgrid-grid-body').scrollLeft() < $('.jsgrid-grid-body .jsgrid-table').width() - $('.jsgrid-grid-body').width() + 16
@@ -108,13 +107,16 @@ function AverageDataReport() {
   }
 
   const initializeJsGrid = function () {
-
     dataForGrid = [];
 
     var layout = [];
+    var headers = [];
+    let Groupid = document.getElementById("groupid").value;
+    if (Groupid != "") {
+      headers = Nestedheaders;
+    }
     var gridheadertitle;
     layout.push({ name: "Date", title: "Date", type: "text", width: "140px", sorting: true });
-
     for (var i = 0; i < SelectedPollutents.length; i++) {
 
       let Parameterssplit = SelectedPollutents[i].split("@_");
@@ -124,22 +126,20 @@ function AverageDataReport() {
       }else{
         filter = AllLookpdata.listPollutents.filter(x => x.parameterName == Parameterssplit[0] && x.stationID == selectedStations);
       }
-      let unitname = AllLookpdata.listReportedUnits.filter(x => x.id == filter[0].unitID);
+      let unitname = filter[0] && AllLookpdata.listReportedUnits.filter(x => x.id ==  filter[0].unitID);
       //gridheadertitle = Parameterssplit[0] + "\n" + unitname[0].unitName
        gridheadertitle = Parameterssplit[0] + "<br>" + unitname[0].unitName +"<br>Min: <br>Max: "
       let Selectedparametersplit = SelectedPollutents[i].split(".");
       let Selectedparameter = Selectedparametersplit.length > 1 ? SelectedPollutents[i].replace(/\./g, '_@_') : SelectedPollutents[i];
-
       layout.push({
         // name: SelectedPollutents[i], title: gridheadertitle, type: "text", width: "100px", sorting: false, cellRenderer: function (item, value) {
-        name: Selectedparameter, title: gridheadertitle, type: "text", width: "100px", sorting: false, cellRenderer: function (item, value) {
+          name: Parameterssplit[0], title: gridheadertitle, type: "text", width: "100px", sorting: false, cellRenderer: function (item, value) {
           let flag = AllLookpdata.listFlagCodes.filter(x => x.id == value[Selectedparameter + "flag"]);
         //  let flag = AllLookpdata.listFlagCodes.filter(x => x.id == value[Object.keys(value).find(key => value[key] === item) + "flag"]);
           let bgcolor = flag.length > 0 ? flag[0].colorCode : "#FFFFF"
           return $("<td>").css("background-color", bgcolor).append(item);
         }
       });
-
       // layout.push({ name:SelectedPollutents[i] , title:  gridheadertitle , type: "text",width:"100px" });
 
     }
@@ -181,7 +181,6 @@ function AverageDataReport() {
       controller: {
 
         loadData: async function (filter) {
-
           var startIndex = (filter.pageIndex - 1) * filter.pageSize;
           let data = await AvgDataReport(startIndex, startIndex + filter.pageSize, filter.sortOrder);
          updateHeaderWithMinMaxValues(data);
@@ -201,14 +200,54 @@ function AverageDataReport() {
         }
 
       },
-
-      fields: layout
+      fields: layout,
+      onDataLoaded: function() {
+        if (headers.length > 0) {
+            addCustomRowHeader(headers);
+        }
+    }
 
     });
 
     $('.jsgrid-grid-body').scroll(function () {
       UpdateColPos(1);
     });
+
+    const addCustomRowHeader = (headers) => {
+      let customRowHeader = '<tr class="custom-header-row">';
+      customRowHeader = `<th class="jsgrid-header-cell"></th>`; 
+      headers.forEach(header => {
+          customRowHeader += `<th class="jsgrid-header-cell" colspan="${header.colspan || 1}" style="width: ${header.width || '100px'};">${header.title}</th>`;
+      });
+      customRowHeader += '</tr>';
+      $(".jsgrid-grid-header").find("table").prepend(customRowHeader);
+  };
+
+  const customHeaderStyle = `
+      .custom-header-row {
+          background-color: #eef6f4;
+          text-align: center; 
+          font-weight: bold; 
+      }
+       .jsgrid-header-cell {
+          border: 1px solid #ddd; 
+          padding: 10px;
+          font-size: 18px !important;
+          color:#2663ac;
+          background-color: #eef6f4;
+      }
+      .jsgrid-grid-header {
+          display: grid;
+          grid-template-columns: repeat(${layout.length}, 100px); /* Adjust based on column count */
+      }
+      .jsgrid-table {
+          width: max-content;
+          table-layout: auto; /* Change from fixed to auto */
+          border-collapse: collapse;
+          border-spacing: 0;
+      }
+  `;
+  $("<style>").prop("type", "text/css").html(customHeaderStyle).appendTo("head");
 
   }
 
@@ -221,7 +260,7 @@ function AverageDataReport() {
             if (!minMaxValues[item]) {
                 minMaxValues[item] = { min: "", max: "" };
             }
-            let finalitem = item.split(".").length > 1 ? item.replace(/\./g, '_@_') : item;
+            let finalitem = item.split(".").length > 1 ? item.replace(/\./g, '_@_') : item.split("@")[0];
             let finadata = data.filter(key => key.hasOwnProperty(finalitem));
             if(finadata.length>0){
                  minMaxValues[item].min = finadata[0][finalitem+"minValue"]==null?"":finadata[0][finalitem+"minValue"];
@@ -229,7 +268,6 @@ function AverageDataReport() {
             }
         });
     //});
-
     // Update the header
     Object.keys(minMaxValues).forEach(key => {
         if (key !== "Date" && key !== " ") {
@@ -237,12 +275,11 @@ function AverageDataReport() {
             let finaltext =$(this).html().split("<br>")[0];
             let finalparametersplit = finaltext.split(".");
             let finalparameter = finaltext;
-      
-            return finalparameter === key;
+            return finalparameter === key.split("@")[0];
         });
             if (headerCell.length > 0) {
                 let unitname = headerCell.html().split("<br>")[1];
-                headerCell.html(`${key.replace(/\_@_/g, '.')}<br>${unitname}<br>Min: ${minMaxValues[key].min}<br>Max: ${minMaxValues[key].max}`);
+                headerCell.html(`${key.split("@")[0]}<br>${unitname}<br>Min: ${minMaxValues[key].min}<br>Max: ${minMaxValues[key].max}`);
             }
         }
     });
@@ -327,7 +364,6 @@ function AverageDataReport() {
               Itemcount.current = data1[0].count;
             }
             var obj = {};
-
             var temp = dataForGrid.findIndex(x => x.Date === data1[k].interval);
 
             let tempparameter = AllLookpdata.listPollutents
@@ -335,7 +371,6 @@ function AverageDataReport() {
             let paramater = AllLookpdata.listPollutents.filter(x => x.id == data1[k].parameterID);
 
             if (paramater.length > 0) {
-
               let roundedNumber = 0;
               let minValue = 0;
               let maxValue = 0;
@@ -359,15 +394,12 @@ function AverageDataReport() {
               let Selectedparameter = Selectedparametersplit.length > 1 ? paramater[0].parameterName.replace(/\./g, '_@_') : paramater[0].parameterName;
 
               if (temp >= 0) {
-
                 //dataForGrid[temp][paramater[0].parameterName] = roundedNumber;
                 dataForGrid[temp][Selectedparameter] = roundedNumber;
                 dataForGrid[temp][Selectedparameter + "flag"] = data1[k].loggerFlags;
                 dataForGrid[temp][Selectedparameter + "minValue"] = minValue;
                 dataForGrid[temp][Selectedparameter + "maxValue"] = maxValue;
-
               } else {
-
                 //obj[paramater[0].parameterName] = roundedNumber;
 
                 //obj[paramater[0].parameterName + "flag"] = data1[k].loggerFlags;
@@ -375,7 +407,6 @@ function AverageDataReport() {
                 obj[Selectedparameter + "flag"] = data1[k].loggerFlags;
                 obj[Selectedparameter + "minValue"] = minValue;
                 obj[Selectedparameter + "maxValue"] = maxValue;
-
                 obj["Date"] = data1[k].interval;
                 dataForGrid.push(obj);
 
@@ -385,9 +416,7 @@ function AverageDataReport() {
           }
 
           document.getElementById('loader').style.display = "none";
-
           setReportData(dataForGrid);
-
           return dataForGrid;
 
         }
@@ -402,7 +431,6 @@ function AverageDataReport() {
 
    let Station = $("#stationid").val();
     let Pollutent = $("#pollutentid").val();
-
     setSelectedPollutents(Pollutent);
     if (Pollutent.length > 0) {
 
@@ -411,11 +439,9 @@ function AverageDataReport() {
     }
     let GroupId = $("#groupid").val();
 
-    if (GroupId == "") {
-      setSelectedPollutents(Pollutent);
-    } else {
-      Pollutent = SelectedPollutents;
-    }
+    if (GroupId !== "") {
+      setSelectedPollutents(groupPollutents);
+    } 
 
     let Fromdate = document.getElementById("fromdateid").value;
 
@@ -433,7 +459,7 @@ function AverageDataReport() {
 
     setListReportData(1);
 
-    //initializeJsGrid();
+    initializeJsGrid();
 
     // AvgDataReport();
 
@@ -833,8 +859,8 @@ function AverageDataReport() {
       let obj = { title: "", colspan: 10 - filter2.length };
       headers.push(obj);
     }
-    //  console.log(filter2);
-    setSelectedPollutents(filter2);
+    // setSelectedPollutents(filter2);
+    setGroupPollutents(filter2)
     setNestedheaders(headers);
     // let filter2 = AllLookpdata.listPollutents.filter(obj => stationID.includes(obj.stationID) && filter1.includes(obj.parameterID)).map(a => a.parameterName);
     // setSelectedPollutents(filter2);
@@ -957,7 +983,7 @@ function AverageDataReport() {
     setFromDate(new Date());
 
     setListReportData(0);
-
+  
     setSelectedPollutents([]);
 
   }
@@ -1073,11 +1099,11 @@ function AverageDataReport() {
                   </div>
                   <div className="col-md-2">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => { setFromDate(date); setGroupSelected(""); }} />
                   </div>
                   <div className="col-md-2">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
+                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => {setToDate(date); setGroupSelected("");}} />
                   </div>
                   <div className="col-md-2">
                     <label className="form-label">Interval</label>
@@ -1114,7 +1140,7 @@ function AverageDataReport() {
                 </div>
               </div>
             </div>
-            {ListReportData != 0 && (
+            {ListReportData != 0  && (
 
               <div id="jsGridData" className="jsGrid" ref={gridRefjsgridreport} />
 

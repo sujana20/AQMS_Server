@@ -140,6 +140,7 @@ function WindRosecomp() {
         console.log("error: ", error);
       });
   }
+  
  const showwindrose = function(finalrange1,finalrange2,finalrange3,finalrange4){
   const chartDom = document.getElementById('radar');
   const myChart = echarts.init(chartDom);
@@ -229,8 +230,19 @@ function WindRosecomp() {
         },
       },
     ],
+   
     legend: {
       show: true,
+      itemGap: 30,
+      left: 'left', // Align legend to the left
+      //orient: 'vertical', // Display legend items vertically
+      itemWidth: 14, // Set the width of legend items
+      itemHeight: 14, // Set the height of legend items
+      itemStyle: {
+        borderRadius: '50%',
+        shape: 'circle',
+      },
+     
       /*right: 10, // Adjust the right property to move the legend closer or further from the right edge
       top: 'middle', // Vertically center the legend
       orient: 'vertical', // Display legend items vertically
@@ -335,9 +347,9 @@ const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
           <div className="card">
               <div className="card-body">
                 <div className="row filtergroup">
-                  <div className="col">
+                  <div className="col-sm-12 col-md-4 mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid">
+                    <select className="form-select stationid border-50" id="stationid">
                     <option value="" selected> Select Station Name</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y}>{x.stationName}</option>
@@ -345,17 +357,19 @@ const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
                     </select>
                   </div>
                   
-                  <div className="col">
+                  <div className="col-sm-12 col-md-4 mb-3 position-relative">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col">
+                  <div className="col-sm-12 col-md-4 mb-3 position-relative">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
 
-                  <div className="col  mt-4">
-                    <button type="button" className="btn btn-primary" onClick={GenarateReport}>Generate Report</button>
+                  <div className="col-sm-12 mt-3">
+                    <button type="button" className="btn btn-primary download-btn" onClick={GenarateReport}>Generate Report</button>
 
                   
                   </div>
@@ -363,7 +377,7 @@ const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
                 </div>
               </div>
             </div>
-            <div className="mt-5"> 
+            <div className="common-table-pd mt-4 m-0"> 
               <div className="col-md-4">
                     <div className="row">
                       <div id="loader" className="loader"></div>
@@ -372,9 +386,9 @@ const spaces = "\n\n\n\n\n"; // Adjust the number of new lines as needed
           <div ref={chartRef} id="radar" style={{ width: '100%', height: '400px' }}>
             </div>;
             {Isdownlaod &&(
-            <div className="text-center">
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPng}>Download as Image</button>
-                <button type="button" className="btn btn-primary mx-1"  onClick={DownloadPdf}>Download as Pdf</button>
+            <div className="text-right col-sm-12">
+                <button type="button" className="btn btn-primary mx-1 mb-3 download-btn"  onClick={DownloadPng}>Download as Image</button>
+                <button type="button" className="btn btn-primary mx-3 mb-3 download-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                 )}
             </div>
