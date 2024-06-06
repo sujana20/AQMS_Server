@@ -2185,7 +2185,7 @@ const DownloadPdf = () => {
             <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2 mb-3">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Group Name</label>
                     <select className="form-select border-50" id="groupid" onChange={ChangeGroupName}>
                       <option value="" selected>None</option>
@@ -2195,7 +2195,7 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2 mb-3">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Station Name</label>
                     {/*  <select className="form-select stationid" id="stationid" multiple="multiple" onChange={ChangeStation}> */}
                     <select className="form-select stationid border-50" id="stationid" onChange={ChangeStation}>
@@ -2205,7 +2205,7 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2 mb-3">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Parameters</label>
                     <select className="form-select pollutentid" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
                       {/* <option selected> Select Pollutents</option> */}
@@ -2214,17 +2214,17 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div> 
-                  <div className="col-md-2 mb-3 position-relative">
+                  <div className="col-md-4 col-lg-2 mb-3 position-relative">
                     <label className="form-label">From Date</label>
                     <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                     <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => setFromDate(date)} />
                   </div>
-                  <div className="col-md-2 mb-3 position-relative">
+                  <div className="col-md-4 col-lg-2 mb-3 position-relative">
                     <label className="form-label">To Date</label>
                     <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
                     <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => setToDate(date)} />
                   </div>
-                  <div className="col-md-2 mb-3">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Interval</label>
                     <select className="form-select border-50" id="criteriaid">
                       <option value="" selected>Select Interval</option>
@@ -2234,7 +2234,7 @@ const DownloadPdf = () => {
                       )}
                     </select>
                   </div>
-                  <div className=" mt-2">
+                  <div className="col-sm-12 mt-2">
                     <button type="button" className="btn btn-primary download-btn" id="getdata" onClick={getdatareport}>Get Data</button>
                     <button type="button" className="btn btn-secondary mx-3 reset-btn" onClick={Resetfilters}>Reset</button>
                   </div>

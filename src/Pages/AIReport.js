@@ -348,18 +348,14 @@ function AIReport() {
         </div>
           <div className="questionInputContainer">
             <form className="row questionInputrow" onSubmit={handleSendMessage}>
-              <div className="form-group questionInputTextArea col-md-10">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputchat"
-                  placeholder="Type a message"
+              <div className="form-group questionInputTextArea">
+                <input type="text" className="form-control border-50"  id="inputchat" placeholder="Type a message"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                 />
               </div>
-              <div className="questionInputSendButtonContainer col-md-2">
-                <button type="submit" className="btn btn-primary mb-2 questionInputSendButton">Send</button>
+              <div className="questionInputSendButtonContainer text-right">
+                <button type="submit" className="btn btn-primary mb-2 questionInputSendButton download-btn">Send</button>
               </div>
             </form>
           </div>

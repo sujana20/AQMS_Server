@@ -4,19 +4,23 @@ body{
 }
 .chatbox_main{
   position: relative;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 122px);
   overflow-y: auto;
   width: 75%;
   margin: auto;
+  background: #fff;
+  border-radius: 11px;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1)
 }
 .questionInputContainer {
-  height: 60px;
+  /* height: 60px; */
   position: absolute;
-  width: 96%;
-  margin: 0rem 1.75rem;
-  bottom: 1rem;
+  width: 100%;
+  /* margin: 0rem 1.75rem;
+  bottom: 1rem; */
   /*background: #FFFFFF;*/
-  border-radius: 8px;
+  padding: 0 10px;
+    border-top: 1px solid #ededed;
   overflow: hidden;
 }
 .questionInputContainer .questionInputrow{
@@ -29,15 +33,15 @@ body{
 }
 
   .chat_messages_main {
-    height: calc(100% - 80px);
+    height: calc(100% - 105px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     scrollbar-width: thin;
-  scrollbar-color: rgb(30 64 175) transparent;
+    scrollbar-color: #aab7cf transparent;
   }
   .chat_messages_main::-webkit-scrollbar {
-    width: 5px; /* Set the width of the scrollbar */
+    width: 3px; /* Set the width of the scrollbar */
   }
   
   .chat_messages_main::-webkit-scrollbar-thumb {

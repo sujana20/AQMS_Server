@@ -224,28 +224,32 @@ function AverageDataReport() {
   };
 
   const customHeaderStyle = `
-      .custom-header-row {
+        .jsgrid-grid-header{
+          background-color: var(--lightgreen) !important;
+        }
+        .custom-header-row {
           background-color: #eef6f4;
           text-align: center; 
-          font-weight: bold; 
       }
-       .jsgrid-header-cell {
-          border: 1px solid #ddd; 
-          padding: 10px;
-          font-size: 18px !important;
-          color:#2663ac;
-          background-color: #eef6f4;
+      .jsgrid-header-cell {
+        text-transform: inherit!important;
+        font-size: 13px!important;
+        background-color: var(--lightgreen) !important;
+        color: var(--blue);
+        left: 0!important;
+        text-align:center!important;
       }
-      .jsgrid-grid-header {
-          display: grid;
-          grid-template-columns: repeat(${layout.length}, 100px); /* Adjust based on column count */
+      .jsgrid-cell{
+        left: 0!important;
       }
+      
       .jsgrid-table {
-          width: max-content;
+          width: 100%;
           table-layout: auto; /* Change from fixed to auto */
           border-collapse: collapse;
           border-spacing: 0;
       }
+      
   `;
   $("<style>").prop("type", "text/css").html(customHeaderStyle).appendTo("head");
 
@@ -1069,9 +1073,9 @@ function AverageDataReport() {
           <div className="card">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Group</label>
-                    <select className="form-select" id="groupid" onChange={ChangeGroupName}>
+                    <select className="form-select border-50" id="groupid" onChange={ChangeGroupName}>
                       <option value="" selected>None</option>
                       <option value="all">All Stations</option>
                       {Groups.map((x, y) =>
@@ -1079,16 +1083,16 @@ function AverageDataReport() {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Station Name</label>
-                    <select className="form-select stationid" id="stationid" onChange={ChangeStation}>
+                    <select className="form-select stationid border-50" id="stationid" onChange={ChangeStation}>
                       <option value="" selected> Select Station</option>
                       {Stations.map((x, y) =>
                         <option value={x.id} key={y} >{x.stationName}</option>
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Parameters</label>
                     <select className="form-select pollutentid" id="pollutentid" multiple="multiple" onChange={Changepollutent}>
                       {/* <option selected> Select Pollutents</option> */}
@@ -1097,17 +1101,19 @@ function AverageDataReport() {
                       )}
                     </select>
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3 position-relative">
                     <label className="form-label">From Date</label>
-                    <DatePicker className="form-control" id="fromdateid" selected={fromDate} onChange={(date) => { setFromDate(date); setGroupSelected(""); }} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="fromdateid" selected={fromDate} onChange={(date) => { setFromDate(date); setGroupSelected(""); }} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3 position-relative">
                     <label className="form-label">To Date</label>
-                    <DatePicker className="form-control" id="todateid" selected={toDate} onChange={(date) => {setToDate(date); setGroupSelected("");}} />
+                    <img src="images/calendar-icon.png" className="calender-icon-bg" alt="calenderIcon" />
+                    <DatePicker className="form-control border-50" id="todateid" selected={toDate} onChange={(date) => {setToDate(date); setGroupSelected("");}} />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-4 col-lg-2 mb-3">
                     <label className="form-label">Interval</label>
-                    <select className="form-select" id="criteriaid">
+                    <select className="form-select border-50" id="criteriaid">
                       <option value="" selected>Select Interval</option>
                       <option value="15-M" selected>15-M</option>
                       {Criteria.map((x, y) =>
@@ -1118,15 +1124,15 @@ function AverageDataReport() {
                        )}
                     </select>
                   </div>
-                  <div className=" mt-4">
-                    <div class="col-md-2 float-start">
-                      <button type="button" className="btn btn-primary" id="getdata" onClick={getdtareport}>Get Data</button>
-                      <button type="button" className="btn btn-secondary mx-1" onClick={Resetfilters}>Reset</button>
+                  <div className="col-sm-12 mt-2">
+                    <div class="float-start">
+                      <button type="button" className="btn btn-primary download-btn mb-2" id="getdata" onClick={getdtareport}>Get Data</button>
+                      <button type="button" className="btn btn-secondary ms-3 mb-2 reset-btn" onClick={Resetfilters}>Reset</button>
                     </div>
                     {ListReportData != 0 && (
                       <div class="col-md-6 float-end text-end px-0">
-                        <button type="button" className="btn btn-primary datashow me-0" onClick={() => DownloadExcel('excel')} >Download Excel</button>&nbsp;
-                        <button type="button" className="btn btn-primary datashow me-0" onClick={() => DownloadExcel('csv')} >Download Csv</button>
+                        <button type="button" className="btn btn-primary datashow me-0 download-btn mb-2" onClick={() => DownloadExcel('excel')} >Download Excel</button>&nbsp;
+                        <button type="button" className="btn btn-primary datashow ms-2 download-btn mb-2" onClick={() => DownloadExcel('csv')} >Download Csv</button>
                       </div>
                     )}
 
@@ -1141,9 +1147,11 @@ function AverageDataReport() {
               </div>
             </div>
             {ListReportData != 0  && (
-
-              <div id="jsGridData" className="jsGrid" ref={gridRefjsgridreport} />
-
+              <div className="card">
+                <div className="card-body p-2">
+                  <div id="jsGridData" className="jsGrid" ref={gridRefjsgridreport} />
+                </div>
+              </div>
             )}
           </div>
 
