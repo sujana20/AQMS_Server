@@ -34,7 +34,7 @@ var nodes = [{
     expandicon:'',
     children:false,
 },
-/* {
+/*{
     value: 'Dashboard1',
     label: 'Dashboard',
     url:'/Dashboard1',

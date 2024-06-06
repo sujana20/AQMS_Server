@@ -43,7 +43,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
     let Password = document.getElementById("Password").value;
     //Password=await handleEncrypt(Password);
     if (!form.checkValidity()) {
-      form.classNameList.add('was-validated');
+      form.classList.add('was-validated');
     } else {
       fetch(CommonFunctions.getWebApiUrl()+ 'api/Users/Login', {
         method: 'POST',

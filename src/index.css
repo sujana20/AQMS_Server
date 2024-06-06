@@ -869,3 +869,9 @@ table.jexcel colgroup col:nth-child(1) {
 .children-container {
   margin-left: 20px;
 }
+
+.Smart_head{
+  font-size: 1rem;
+  font-family: "Roboto bold";
+  color :#fff;
+}

@@ -70,12 +70,12 @@ function Dashboard1() {
     return htmlArray;
   };
   const AQIranges=[
-    { title: "Good", range:"0-50", value : 36,  color: "#9cd84e",class:"active-success" },
-    { title: "Moderate", range: "51-100", value: 36, color: "#facf39" ,class:"active-warning"},
-    { title: "Unhealthy for Sensitive Groups", range: "101-150", value: 36, color: "#c83e3a",class:"active-lightdanger" },
-    { title: "Unhealthy", range: "151-200", value: 36, color: "#852626",class:"active-danger" },
-    { title: "Very Unhealthy", range: "201-300", value: 72, color: "#78243e",class:"active-Lightred" },
-    { title: "Hazardous", range: "301-500", value: 144, color: "#73236c",class:"active-red" } 
+    { title: "Good", range:"0-50", value : 70,  color: "#9cd84e",class:"active-success" },
+    { title: "Moderate", range: "51-100", value: 25, color: "#facf39" ,class:"active-warning"},
+    { title: "Unhealthy for Sensitive Groups", range: "101-150", value: 15, color: "#c83e3a",class:"active-lightdanger" },
+    { title: "Unhealthy", range: "151-200", value: 10, color: "#852626",class:"active-danger" },
+    { title: "Very Unhealthy", range: "201-300", value: 10, color: "#78243e",class:"active-Lightred" },
+    { title: "Hazardous", range: "301-500", value: 15, color: "#73236c",class:"active-red" } 
   ];
   const Tempranges=[
     { title: "Good", range:"18-27", value : 36,  color: "#9cd84e",class:"active-success" },
@@ -137,7 +137,7 @@ function Dashboard1() {
   
   const GetDoughnutChart = function(data,id){
     let avgValue=GetAvergaevalue(data,"AQI Index");
-    let rotationvalue=(360/500)*avgValue;
+    let rotationvalue=(170/500)*avgValue;
     $("#"+id).html('<div class="needle" style=transform:rotate('+rotationvalue+'deg)></div>');
     var myChart =  $("#"+id).drawDoughnutChart(AQIranges,avgValue,id);
    // setneedlerotation("rotate("+rotationvalue+"deg)");
