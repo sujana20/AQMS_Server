@@ -10,6 +10,10 @@
   }
 }
 
+@media (min-width:320px) and (max-width: 576px) {
+  .Smart_head{display: none;}
+
+}
 @media (min-width:320px) and (max-width: 767px) {
   .logo{width: auto;height: auto;justify-content: flex-start;}
   .logo img{height: 66px;  width: 69px;  object-fit: cover;margin-left: 8px;}
