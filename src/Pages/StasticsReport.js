@@ -45,6 +45,7 @@ function StasticsReport() {
   const [Pollutents, setPollutents] = useState([]);
   const [Criteria, setcriteria] = useState([]);
   const [ChartType, setChartType] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
     '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
     '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
@@ -57,8 +58,14 @@ function StasticsReport() {
     '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
   useEffect(() => {
     LoadData();
+
+    if (isModalVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
     // initializeJsGrid();
-  }, []);
+  }, [isModalVisible]);
 
   const LoadData = async function(){
     let authHeader = await CommonFunctions.getAuthHeader();
@@ -532,13 +539,85 @@ const AIReport = () => {
        console.log(data);
       })
       .catch((error) => console.log(error));
+      setIsModalVisible(true); // Show the modal
 }
-
+const closeModal = () => {
+  setIsModalVisible(false); // Hide the modal
+};
   return (
     <main id="main" className="main" >
       {/* Same as */}
       {/* <section className="section grid_section h100 w100">
         <div className="h100 w100"> */}
+      
+        
+        
+         
+            {/* <div className="modal-header">
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> */}
+            
+            {isModalVisible && (
+              <div className="modal-background project-modal">
+                <div className="sidebar-modal">
+                  <div className="col-sm-12 p-4">
+                    <div className="text-right mb-2">
+                      <button type="button" className="close-btn close-modal-btn" onClick={closeModal}>
+                        <i class="bi bi-x"></i>
+                      </button>
+                     
+                    </div>
+                    <h5 className="mb-3 projectItemContent">
+                      <b>Lorem Ipsum is simply dummy text</b>
+                    </h5>
+                   <ul className="ps-0 modal-scroll-y">
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                   </ul>
+                  </div>
+                </div>
+              </div>
+            )}
       <section>
         <div>
           <div>
