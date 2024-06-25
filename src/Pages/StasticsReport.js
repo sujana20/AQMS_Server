@@ -722,7 +722,7 @@ const closeModal = () => {
                   </div>
 
                     <div className="text-right mt-3 pb-4">
-                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Assistance</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Expert</button>
                     <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                 <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
