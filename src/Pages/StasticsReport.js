@@ -41,6 +41,7 @@ function StasticsReport() {
   const [ChartOptions, setChartOptions] = useState();
   const [AllLookpdata, setAllLookpdata] = useState(null);
   const [Stations, setStations] = useState([]);
+  const [question, setquestion] = useState([]);
   const [Pollutents, setPollutents] = useState([]);
   const [Criteria, setcriteria] = useState([]);
   const [ChartType, setChartType] = useState();
@@ -149,6 +150,7 @@ function StasticsReport() {
       .then((data) => {
         if (data) {
           let data1 = JSON.parse(data);
+          setquestion(data);
           getchartdata(data1, Pollutent, ChartType, Criteria)
         }
       }).catch((error) => console.log(error));
@@ -515,6 +517,23 @@ const DownloadPdf = () => {
   });
 };
 
+const AIReport = () => {
+  let params = new URLSearchParams({ userMessage: question });
+    fetch(process.env.REACT_APP_CHATGPT_API1, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userMessage: question}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+       console.log(data);
+      })
+      .catch((error) => console.log(error));
+}
+
   return (
     <main id="main" className="main" >
       {/* Same as */}
@@ -604,6 +623,7 @@ const DownloadPdf = () => {
                       <Bar ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
                     </div>
                   <div className="text-right mt-3 pb-4">
+                  <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Expert</button>
                     <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                     <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                   </div>
@@ -623,7 +643,8 @@ const DownloadPdf = () => {
                   </div>
 
                     <div className="text-right mt-3 pb-4">
-                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Assistance</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                 <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
@@ -641,7 +662,8 @@ const DownloadPdf = () => {
                       <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
                     </div>
                     <div className="text-right mt-3 pb-4">
-                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Assistance</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                 <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
