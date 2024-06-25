@@ -1180,3 +1180,10 @@ transform: rotate(calc(360deg * var(--fifth-start) + 45deg + var(--donut-spacing
   overflow-y: auto;
     height: calc(100vh - 200px);
 }
+.AIdata_content p{
+  font-size: 0.95rem;
+  font-family: "Roboto medium";
+}
+.AIdata_content ul li{
+  margin-bottom: 0.5rem;
+}

@@ -269,10 +269,11 @@ function AIReport() {
   const [inputText, setInputText] = useState('');
   const [processingMessages, setProcessingMessages] = useState([]);
   const [isTitleVisible, setIsTitleVisible] = useState(true);
+  const [param, setParam] = useState(null);
   const chatContainerRef = useRef(null);
 
   const handleSendMessage = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     if (inputText.trim() !== '') {
       const isQuestion = true;
@@ -290,6 +291,17 @@ function AIReport() {
     }
   };
 
+  const handleClick = (param) =>{
+    setInputText(param);
+    setParam(param); // Update param state to trigger useEffect
+  };
+
+  // Use useEffect to call handleSendMessage when inputText changes
+  useEffect(() => {
+    if (param !== null) {
+      handleSendMessage();
+    }
+  }, [param]);
   const getJsondata = async function (question) {
     let params = new URLSearchParams({ userMessage: question });
     try {
@@ -340,13 +352,13 @@ function AIReport() {
             <div className="helping-title-center">
               <h1 className="ai_help_title">How can I help you today?</h1>
               <div className="additional-box">
-                <div className="chat-ai-box1">
+                <div className="chat-ai-box1" onClick={() => handleClick("max so2 values in each room in last month")}>
                   <label>Write code for a specific task</label>
                 </div>
-                <div className="chat-ai-box1">
+                <div className="chat-ai-box1" onClick={() => handleClick("Comapre co and o3 values in room1 and room2")}>
                     <label>Trusted by Millions of Users </label>
                 </div>
-                <div className="chat-ai-box1">
+                <div className="chat-ai-box1" onClick={() => handleClick("Which room has max temparature in last 2 months")}>
                     <label>Provide questions for assistance.</label>
                 </div>
               </div>

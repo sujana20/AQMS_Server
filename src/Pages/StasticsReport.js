@@ -42,6 +42,7 @@ function StasticsReport() {
   const [AllLookpdata, setAllLookpdata] = useState(null);
   const [Stations, setStations] = useState([]);
   const [question, setquestion] = useState([]);
+  const [AIData, setAIData] = useState([]);
   const [Pollutents, setPollutents] = useState([]);
   const [Criteria, setcriteria] = useState([]);
   const [ChartType, setChartType] = useState();
@@ -526,6 +527,7 @@ const DownloadPdf = () => {
 
 const AIReport = () => {
   let params = new URLSearchParams({ userMessage: question });
+  document.getElementById("loader").style.display="block";
     fetch(process.env.REACT_APP_CHATGPT_API1, {
       method: 'POST',
       headers: {
@@ -534,12 +536,18 @@ const AIReport = () => {
       },
       body: JSON.stringify({ userMessage: question}),
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
        console.log(data);
+       setIsModalVisible(true); // Show the modal
+       setAIData(data);
+       document.getElementById("loader").style.display="none";
       })
-      .catch((error) => console.log(error));
-      setIsModalVisible(true); // Show the modal
+      .catch((error) =>{
+        document.getElementById("loader").style.display="none";
+        console.log(error)
+      });
+      
 }
 const closeModal = () => {
   setIsModalVisible(false); // Hide the modal
@@ -567,10 +575,13 @@ const closeModal = () => {
                       </button>
                      
                     </div>
-                    <h5 className="mb-3 projectItemContent">
+                    {/* <h5 className="mb-3 projectItemContent">
                       <b>Lorem Ipsum is simply dummy text</b>
-                    </h5>
-                   <ul className="ps-0 modal-scroll-y">
+                    </h5> */}
+                    <div className="mt-2 ps-0 modal-scroll-y" >
+                      <div className="AIdata_content" dangerouslySetInnerHTML={{ __html: AIData }}></div>
+                    </div>
+                  {/*  <ul className="ps-0 modal-scroll-y">
                     <li className="modal-notification-item">
                       <i class="bi bi-info-circle text-primary"></i>
                       <div>
@@ -613,7 +624,7 @@ const closeModal = () => {
                         <p>Quae dolorem earum veritatis oditseno</p>
                       </div>
                     </li>
-                   </ul>
+                   </ul> */}
                   </div>
                 </div>
               </div>
@@ -749,6 +760,12 @@ const closeModal = () => {
                 </div>
               </div>
             )}
+
+            <div className="col-md-4">
+                <div className="row">
+                  <div id="loader" className="loader"></div>
+                </div>
+              </div>
           </div>
         </div>
       </section>
