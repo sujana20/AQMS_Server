@@ -6,7 +6,7 @@ body{
   position: relative;
   height: calc(100vh - 122px);
   overflow-y: auto;
-  width: 75%;
+  width: 100%;
   margin: auto;
   background: #fff;
   border-radius: 11px;
@@ -30,6 +30,7 @@ body{
 }
 .questionInputTextArea {
   margin: 1rem 0rem;
+  position: relative;
 }
 
   .chat_messages_main {
@@ -70,5 +71,64 @@ width: 10%;
   }
 table.table tr th, table.table tr td {
   padding: 7px 12px;
+  }
+
+  .chat_button{
+    position: absolute;
+    top: 2px;
+    right: 13px;
+    background: var(--blue);
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ai_title_name{
+    text-transform: uppercase;
+    background:linear-gradient(0deg, #2663ac, #75a5df);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Roboto Bold';
+    font-size: 35px;
+  }
+
+  .ai_help_title{
+    text-align: center;
+    font-weight: 600;
+    color: #c4c7c5;
+    /* height: 100%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .additional-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .additional-box .chat-ai-box1{
+    background: #f0f4f9;
+    height: 60px;
+    border-radius: 11px;
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: 15px 10px;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,.05),0 4px 6px 0 rgba(0,0,0,.02);
+  }
+  .additional-box .chat-ai-box1 label{
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .helping-title-center{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 /*chatgpt end*/

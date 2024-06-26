@@ -268,10 +268,12 @@ function AIReport() {
   const [chatHistory, setChatHistory] = useState([]);
   const [inputText, setInputText] = useState('');
   const [processingMessages, setProcessingMessages] = useState([]);
+  const [isTitleVisible, setIsTitleVisible] = useState(true);
+  const [param, setParam] = useState(null);
   const chatContainerRef = useRef(null);
 
   const handleSendMessage = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     if (inputText.trim() !== '') {
       const isQuestion = true;
@@ -285,9 +287,21 @@ function AIReport() {
       }
 
       setInputText('');
+      setIsTitleVisible(false); // Hide the title when a message is sent
     }
   };
 
+  const handleClick = (param) =>{
+    setInputText(param);
+    setParam(param); // Update param state to trigger useEffect
+  };
+
+  // Use useEffect to call handleSendMessage when inputText changes
+  useEffect(() => {
+    if (param !== null) {
+      handleSendMessage();
+    }
+  }, [param]);
   const getJsondata = async function (question) {
     let params = new URLSearchParams({ userMessage: question });
     try {
@@ -329,9 +343,29 @@ function AIReport() {
   return (
     <main id="main" className="main">
       <section className="chat-section">
-        
+        <h1 className="ai_title_name">Hello, Admin</h1>
         <div className="chatbox_main">
+          
           <div ref={chatContainerRef} className="chat_messages_main">
+            
+          {isTitleVisible && (
+            <div className="helping-title-center">
+              <h1 className="ai_help_title">How can I help you today?</h1>
+              <div className="additional-box">
+                <div className="chat-ai-box1" onClick={() => handleClick("max so2 values in each room in last month")}>
+                  <label>Write code for a specific task</label>
+                </div>
+                <div className="chat-ai-box1" onClick={() => handleClick("Comapre co and o3 values in room1 and room2")}>
+                    <label>Trusted by Millions of Users </label>
+                </div>
+                <div className="chat-ai-box1" onClick={() => handleClick("Which room has max temparature in last 2 months")}>
+                    <label>Provide questions for assistance.</label>
+                </div>
+              </div>
+            </div>
+        )}
+              
+            
         <div className="chat-messages">
         {chatHistory.map((item, index) => (
                 <div key={index} className={item.isQuestion ? 'question' : 'answer'}>
@@ -353,10 +387,11 @@ function AIReport() {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                 />
+                <span className="questionInputSendButtonContainer text-right">
+                  <button type="submit" className="btn btn-primary mb-2 questionInputSendButton chat_button"><i className="bi bi-send"></i></button>
+                </span>
               </div>
-              <div className="questionInputSendButtonContainer text-right">
-                <button type="submit" className="btn btn-primary mb-2 questionInputSendButton download-btn">Send</button>
-              </div>
+              
             </form>
           </div>
         </div>

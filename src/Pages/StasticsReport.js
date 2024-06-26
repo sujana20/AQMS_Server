@@ -41,9 +41,12 @@ function StasticsReport() {
   const [ChartOptions, setChartOptions] = useState();
   const [AllLookpdata, setAllLookpdata] = useState(null);
   const [Stations, setStations] = useState([]);
+  const [question, setquestion] = useState([]);
+  const [AIData, setAIData] = useState([]);
   const [Pollutents, setPollutents] = useState([]);
   const [Criteria, setcriteria] = useState([]);
   const [ChartType, setChartType] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
     '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
     '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
@@ -56,8 +59,14 @@ function StasticsReport() {
     '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
   useEffect(() => {
     LoadData();
+
+    if (isModalVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
     // initializeJsGrid();
-  }, []);
+  }, [isModalVisible]);
 
   const LoadData = async function(){
     let authHeader = await CommonFunctions.getAuthHeader();
@@ -149,6 +158,7 @@ function StasticsReport() {
       .then((data) => {
         if (data) {
           let data1 = JSON.parse(data);
+          setquestion(data);
           getchartdata(data1, Pollutent, ChartType, Criteria)
         }
       }).catch((error) => console.log(error));
@@ -515,11 +525,110 @@ const DownloadPdf = () => {
   });
 };
 
+const AIReport = () => {
+  let params = new URLSearchParams({ userMessage: question });
+  document.getElementById("loader").style.display="block";
+    fetch(process.env.REACT_APP_CHATGPT_API1, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userMessage: question}),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+       console.log(data);
+       setIsModalVisible(true); // Show the modal
+       setAIData(data);
+       document.getElementById("loader").style.display="none";
+      })
+      .catch((error) =>{
+        document.getElementById("loader").style.display="none";
+        console.log(error)
+      });
+      
+}
+const closeModal = () => {
+  setIsModalVisible(false); // Hide the modal
+};
   return (
     <main id="main" className="main" >
       {/* Same as */}
       {/* <section className="section grid_section h100 w100">
         <div className="h100 w100"> */}
+      
+        
+        
+         
+            {/* <div className="modal-header">
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> */}
+            
+            {isModalVisible && (
+              <div className="modal-background project-modal">
+                <div className="sidebar-modal">
+                  <div className="col-sm-12 p-4">
+                    <div className="text-right mb-2">
+                      <button type="button" className="close-btn close-modal-btn" onClick={closeModal}>
+                        <i class="bi bi-x"></i>
+                      </button>
+                     
+                    </div>
+                    {/* <h5 className="mb-3 projectItemContent">
+                      <b>Lorem Ipsum is simply dummy text</b>
+                    </h5> */}
+                    <div className="mt-2 ps-0 modal-scroll-y" >
+                      <div className="AIdata_content" dangerouslySetInnerHTML={{ __html: AIData }}></div>
+                    </div>
+                  {/*  <ul className="ps-0 modal-scroll-y">
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                    <li className="modal-notification-item">
+                      <i class="bi bi-info-circle text-primary"></i>
+                      <div>
+                        <h4>Lorem Ipsum</h4>
+                        <p>Quae dolorem earum veritatis oditseno</p>
+                      </div>
+                    </li>
+                   </ul> */}
+                  </div>
+                </div>
+              </div>
+            )}
       <section>
         <div>
           <div>
@@ -604,6 +713,7 @@ const DownloadPdf = () => {
                       <Bar ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
                     </div>
                   <div className="text-right mt-3 pb-4">
+                  <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Expert</button>
                     <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                     <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                   </div>
@@ -623,7 +733,8 @@ const DownloadPdf = () => {
                   </div>
 
                     <div className="text-right mt-3 pb-4">
-                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Expert</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                 <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
@@ -641,13 +752,20 @@ const DownloadPdf = () => {
                       <Line ref={chartRef} options={ChartOptions} data={ChartData} plugins={[legendMargin]} height={550} />
                     </div>
                     <div className="text-right mt-3 pb-4">
-                <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={AIReport}>AI Assistance</button>
+                    <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPng}>Download as Image</button>
                 <button type="button" className="btn btn-primary mx-1 mb-2 filter-btn"  onClick={DownloadPdf}>Download as Pdf</button>
                 </div>
                   </div>
                 </div>
               </div>
             )}
+
+            <div className="col-md-4">
+                <div className="row">
+                  <div id="loader" className="loader"></div>
+                </div>
+              </div>
           </div>
         </div>
       </section>

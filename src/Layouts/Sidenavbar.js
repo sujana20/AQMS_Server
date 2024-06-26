@@ -75,7 +75,7 @@ function Sidenavbar() {
                {ispermission(x) && (
               x.children.length > 0 && (
                 <a className="nav-link collapsed animation-forwards animate-delay-2" data-bs-target={"#" + x.label + "-nav"} data-bs-toggle="collapse" href="#">
-                  <i className={x.icon}></i>
+                  {/* <i className={x.icon}></i> */}
                   <img src={x.img} className="sideIcon-img"></img>
                   <span>{x.label}</span><i className={x.expandicon}></i>
                 </a>

@@ -132,7 +132,7 @@
   height: 47px;
   font-family: 'Roboto bold';
   width: 200px;
-  justify-content: center;
+  /* justify-content: center; */
   margin-left: auto;
   margin-right: auto;
 }
