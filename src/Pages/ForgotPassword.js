@@ -1,7 +1,7 @@
 
 import React from "react";
 import { toast } from 'react-toastify';
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
 import CommonFunctions from "../utils/CommonFunctions";
 function ForgotPassword() {
     const $ = window.jQuery;
