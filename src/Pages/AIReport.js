@@ -352,14 +352,14 @@ function AIReport() {
             <div className="helping-title-center">
               <h1 className="ai_help_title">How can I help you today?</h1>
               <div className="additional-box">
-                <div className="chat-ai-box1" onClick={() => handleClick("max so2 values in each room in last month")}>
-                  <label>Write code for a specific task</label>
+                <div className="chat-ai-box1" onClick={() => handleClick("Average Temp in room2 for last one month")}>
+                  <label>Average temparature in room2</label>
                 </div>
-                <div className="chat-ai-box1" onClick={() => handleClick("Comapre co and o3 values in room1 and room2")}>
-                    <label>Trusted by Millions of Users </label>
+                <div className="chat-ai-box1" onClick={() => handleClick("Average PM2.5 and pm10 in room1 and room2 for last one month")}>
+                    <label>Average PM2.5 and pm10 in room1 and room2</label>
                 </div>
-                <div className="chat-ai-box1" onClick={() => handleClick("Which room has max temparature in last 2 months")}>
-                    <label>Provide questions for assistance.</label>
+                <div className="chat-ai-box1" onClick={() => handleClick("show pm10 for room1 and room2 for last one month")}>
+                    <label>Show pm10 for room1 and room2</label>
                 </div>
               </div>
             </div>

@@ -575,9 +575,9 @@ const closeModal = () => {
                       </button>
                      
                     </div>
-                    {/* <h5 className="mb-3 projectItemContent">
-                      <b>Lorem Ipsum is simply dummy text</b>
-                    </h5> */}
+                     <h5 className="mb-2 text-center projectItemContent">
+                      <b>AI Analysis</b>
+                    </h5> 
                     <div className="mt-2 ps-0 modal-scroll-y" >
                       <div className="AIdata_content" dangerouslySetInnerHTML={{ __html: AIData }}></div>
                     </div>

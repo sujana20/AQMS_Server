@@ -51,6 +51,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "browser": {
+    "crypto": false
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

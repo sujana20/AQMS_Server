@@ -141,7 +141,7 @@ function Header() {
           </li> */}
         </ul>
         <div className="d-flex align-items-center justify-content-between">
-        <div className="Smart_head">Smart Sense -- Air Quality Monitoring</div>
+        <div className="Smart_head">Smart Sense -- Indoor Air Quality Monitoring</div>
         </div>
         <span className="text-right text-white logout-button">
           <a className="dropdown-item d-flex align-items-center justify-content-between" style={{cursor:"pointer"}} onClick={Signout}>
