@@ -1,7 +1,7 @@
 
 import React from "react";
 import { toast } from 'react-toastify';
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
 import CommonFunctions from "../utils/CommonFunctions";
 function ChangePassword() {
 
@@ -46,7 +46,7 @@ function ChangePassword() {
         if (!validation) {
             return false;
         }
-        NewPassword = await handleEncrypt(NewPassword);
+      //  NewPassword = await handleEncrypt(NewPassword);
         fetch(CommonFunctions.getWebApiUrl() + 'api/Users/ChangePassword' , {
             method: 'POST',
             headers: {
@@ -78,7 +78,7 @@ function ChangePassword() {
               );
         
     };
-    const handleEncrypt = async (password) => {
+   /*  const handleEncrypt = async (password) => {
 
         // Generate a salt (number of rounds determines the complexity)
         const saltRounds = 10;
@@ -89,7 +89,7 @@ function ChangePassword() {
     
         return encryptedPassword ;
     }
-
+ */
   return (
     <main>
       <div className="container">
