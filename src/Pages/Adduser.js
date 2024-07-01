@@ -3,6 +3,7 @@ import React, { Component, useEffect, useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
 import CommonFunctions from "../utils/CommonFunctions";
+// import bcrypt from '../../node_modules/bcryptjs/dist/bcrypt';
 import bcrypt from 'bcryptjs';
 function Adduser() {
   const $ = window.jQuery;
@@ -80,8 +81,8 @@ function Adduser() {
     let UserGroup=document.getElementById("usergroup").value;
     let UserRole = document.getElementById("userrole").value;
     
-    let encryptPassword=await handleEncrypt(Password);
-
+    //let encryptPassword=await handleEncrypt(Password);
+    let encryptPassword=Password;
     let validation = Useraddvalidation(UserName, UserEmail,encryptPassword, UserGroup, UserRole);
     if (!validation) {
       return false;
