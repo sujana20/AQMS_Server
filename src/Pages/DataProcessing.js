@@ -61,6 +61,7 @@ function DataProcessing() {
   const [Pollutents, setPollutents] = useState([]);
   //const [selectedgrid, setselectedgrid] = useState([]);
   const [GroupSelected, setGroupSelected] = useState("");
+  const [IntervalSelected, setIntervalSelected] = useState("");
   const [SelectedPollutents, setSelectedPollutents] = useState([]);
   const [Criteria, setcriteria] = useState([]);
   const [dataForGridcopy, setdataForGridcopy] = useState([]);
@@ -1351,6 +1352,7 @@ function DataProcessing() {
     let Fromdate = document.getElementById("fromdateid").value;
     let Todate = document.getElementById("todateid").value;
     let Interval = document.getElementById("criteriaid").value;
+    setIntervalSelected(Interval);
     let valid = ReportValidations(Station, Pollutent, Fromdate, Todate, Interval, GroupId);
     if (!valid) {
       return false;
@@ -1396,7 +1398,7 @@ function DataProcessing() {
             appendDataToSpreadsheet(data1, GroupId);
           }
         }
-
+          
         document.getElementById('loader').style.display = "none";
 
       }).catch((error) => console.log(error));
@@ -1431,6 +1433,7 @@ function DataProcessing() {
     id.disabled=false;
       }
      }, 500);
+     
   }
 
   const ReportValidations = function (Station, Pollutent, Fromdate, Todate, Interval, GroupId) {
@@ -1627,6 +1630,7 @@ function DataProcessing() {
          stationParamaters.push({"Station": StationGroups[i].stationID,"ParameterName":StationGroups[i].parameterID});
      } */
   }
+
 
   const Changepollutent = function (e) {
     setcriteria([]);
@@ -2252,26 +2256,30 @@ const DownloadPdf = () => {
             {ListReportData.length > 0 && (
               <div className="card">
                 <div className="card-body p-2">
-                  <div className="row">
-                    <div className="col-md-9 mb-3">
+                  <div className="row">      
+                   <div className="col-md-9 mb-3" >
+                      <div className={IntervalSelected !== "15-M" ? "disable" : ""}>
                       {AllLookpdata.listFlagCodes.map((x, y) =>
                         <button type="button" className={y == 0 ? "btn btn-primary flag" : "btn btn-primary flag mx-1"} style={{ backgroundColor: x.colorCode, borderColor: x.colorCode }} onClick={() => UpdateFlag(x)} data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title={x.name} >{x.code}</button>
                       )}
-                    </div>
+                      </div>
+                    </div>                   
                     {/*  </div>
                 <div className="row"> */}
-                    <div className="col-md-3 mb-3">
+                  <div className="col-md-3 mb-3">
+                    <div className={IntervalSelected !== "15-M" ? "disable" : ""}>
                       <div className="float-end">
                         <button type="button" className="btn btn-primary" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="History" onClick={gethistory}><i class="bi bi-clock-history"></i></button>
                         <button type="button" className="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Revert" onClick={reverttoprevious}><i class="bi bi-back"></i></button>
                         <button type="button" className={SaveData.length > 0 ? "btn btn-primary mx-1" : "btn btn-primary mx-1 disable"} data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Save" onClick={SaveEditedData}><i class="bi bi-save"></i></button>
                       </div>
                     </div>
+                 </div>
                   </div>
 
                   <div className="jsGrid" id="jspreadRefid" ref={jspreadRef} />
 
-
+                        
                 </div>
               </div>
             )}
