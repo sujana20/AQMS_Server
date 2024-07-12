@@ -24,8 +24,8 @@ const AddLicense = ({ handleAuthentication }) => {
           jsonData.StartDate=jsonData.StartDate.split("T")[0] + " 00:00:00";
           jsonData.EndDate=jsonData.EndDate.split("T")[0] + " 00:00:00";;
           var EncryptData=jsonData.LicenseKey+','+jsonData.StartDate+','+jsonData.EndDate+','+jsonData.NumberofDevices+','+jsonData.NumberofParameters+','+jsonData.MachineID+','+jsonData.Version+','+jsonData.Edition+','+jsonData.NumberofUsers+','+jsonData.IsActive;
-          var DataKey=await handleEncrypt(EncryptData); 
-
+          //var DataKey=await handleEncrypt(EncryptData); 
+          var DataKey=EncryptData;
           jsonData.LicenseKey=DataKey;
           let isvalid=ValaidatelicenceFile(jsonData);
           if(!isvalid){
@@ -59,7 +59,7 @@ const AddLicense = ({ handleAuthentication }) => {
     }
   }
 
-  const handleEncrypt = async (selectedfile) => {
+ /*  const handleEncrypt = async (selectedfile) => {
 
     // Generate a salt (number of rounds determines the complexity)
     const saltRounds = 10;
@@ -69,7 +69,7 @@ const AddLicense = ({ handleAuthentication }) => {
     const encryptedPassword = await bcrypt.hash(selectedfile, salt);
 
     return encryptedPassword ;
-  }
+  } */
 
 
 // function AddLicense() {
